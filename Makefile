@@ -1,5 +1,7 @@
 # Makefile based off of example from http://content.gpwiki.org/index.php/Makefile
 
+MOUNTED = /tmp/pfs
+
 # The compiler
 C++ = g++
 
@@ -79,7 +81,7 @@ $(STORE)/%.o: %.cpp
 %.h: ;
 
 # Cleans up the objects, .d files and executables.
-clean:
+clean: unmount
 		@echo Making clean.
 		@-rm -f $(foreach DIR,$(DIRS),$(STORE)/$(DIR)/*.d $(STORE)/$(DIR)/*.o)
 		@-rm -f $(TARGET)
@@ -97,8 +99,12 @@ dirs:
 		@-$(foreach DIR,$(INCS), if [ ! -e $(STORE)/$(DIR) ]; \
 		 then mkdir $(STORE)/$(DIR); fi; )
 
-run: $(TARGET)
-		./$(TARGET)
+run: $(TARGET) unmount
+		@-if [ ! -e $(MOUNTED) ]; then mkdir $(MOUNTED); fi;
+		@./$(TARGET) $(MOUNTED)
+
+unmount:
+		@-if [ -e $(MOUNTED) ]; then fusermount -u $(MOUNTED); rm -r $(MOUNTED); fi;
 
 # Includes the .d files so it knows the exact dependencies for every
 # source.
