@@ -1,4 +1,3 @@
-#define FUSE_USE_VERSION 27
 
 #include <fuse.h>
 #include <stdio.h>
@@ -77,13 +76,13 @@ static int hello_read(const char *path, char *buf, size_t size, off_t offset, st
     return size;
 }
 
-static struct fuse_operations hello_operations = {
-    .getattr = hello_getattr,
-    .readdir = hello_readdir,
-    .open = hello_open,
-    .read = hello_read,
-};
+static struct fuse_operations hello_operations;
 
 int main(int argc, char **argv) {
+    hello_operations.getattr = hello_getattr;
+    hello_operations.readdir = hello_readdir;
+    hello_operations.open = hello_open;
+    hello_operations.read = hello_read;
+    
     return fuse_main(argc, argv, &hello_operations, NULL);
 }
