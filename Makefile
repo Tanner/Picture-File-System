@@ -8,7 +8,7 @@ C++ = g++
 # Specify the main target
 TARGET = pfs
 # Default build type (release or debug)
-TYPE = release
+TYPE = debug
 # Which directories contain source files
 DIRS = source
 # Which directories contain header files
@@ -22,7 +22,7 @@ ARCH = x64
 
 # The next blocks change some variables depending on the build type
 ifeq ($(TYPE), debug)
-CCPARAM = -std=c++11 -Wall -g -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
+CCPARAM = -std=c++11 -Wall -g -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64 `pkg-config fuse --cflags --libs`
 ifeq ($(C++), clang++)
 LDPARAM = -stdlib=libc++
 CCPARAM += -stdlib=libc++
@@ -31,7 +31,7 @@ MACROS =
 endif
 
 ifeq ($(TYPE), release)
-CCPARAM = -std=c++11 -Wall -O2 -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
+CCPARAM = -std=c++11 -Wall -O2 -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64 `pkg-config fuse --cflags --libs`
 ifeq ($(C++), clang++)
 LDPARAM = -stdlib=libc++
 CCPARAM += -stdlib=libc++
@@ -101,7 +101,7 @@ dirs:
 
 run: $(TARGET) unmount
 		@-if [ ! -e $(MOUNTED) ]; then mkdir $(MOUNTED); fi;
-		@./$(TARGET) $(MOUNTED)
+		@./$(TARGET) $(MOUNTED) -d
 
 unmount:
 		@-if [ -e $(MOUNTED) ]; then fusermount -u $(MOUNTED); rm -r $(MOUNTED); fi;
