@@ -8,7 +8,7 @@ C++ = g++
 # Specify the main target
 TARGET = pfs
 # Default build type (release or debug)
-TYPE = release
+TYPE = debug
 # Which directories contain source files
 DIRS = source
 # Which directories contain header files
@@ -91,7 +91,7 @@ dirs:
 
 run: $(TARGET) unmount
 		@-if [ ! -e $(MOUNTED) ]; then mkdir $(MOUNTED); fi;
-		@./$(TARGET) $(MOUNTED)
+		@./$(TARGET) $(MOUNTED) -d
 
 unmount:
 		@-if [ -e $(MOUNTED) ]; then fusermount -u $(MOUNTED); rm -r $(MOUNTED); fi;

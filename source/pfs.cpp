@@ -1,30 +1,40 @@
 
-#include <fuse.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
+#include <iostream>
+#include <fstream>
+
+#include "entity.h"
+
+using namespace pfs;
 
 static const char *hello_str = "Hello World Kitty!\n";
 static const char *hello_path = "/hello";
 
+// static ofstream log("pfs.log", ios::in | ios::out | ios::trunc);
+
 static int hello_getattr(const char *path, struct stat *stbuf) {
-    int res = 0;
+    // if (!log.is_open()) {
+    //     log.open("pfs.log", ios::in | ios::out | ios::trunc);
+    // }
+    cout << path << endl;
+    auto_ptr<Entity> entity(Entity::entity_for_path(path));
+    return entity.get()->getattr(stbuf);
 
-    memset(stbuf, 0, sizeof(struct stat));
+    // int res = 0;
 
-    if (strcmp(path, "/") == 0) {
-        stbuf->st_mode = S_IFDIR | 0755;
-        stbuf->st_nlink = 2;
-    } else if (strcmp(path, hello_path) == 0) {
-        stbuf->st_mode = S_IFREG | 0444;
-        stbuf->st_nlink = 1;
-        stbuf->st_size = strlen(hello_str);
-    } else {
-        res = -ENOENT;
-    }
+    // memset(stbuf, 0, sizeof(struct stat));
 
-    return res;
+    // if (strcmp(path, "/") == 0) {
+    //     stbuf->st_mode = S_IFDIR | 0755;
+    //     stbuf->st_nlink = 2;
+    // } else if (strcmp(path, hello_path) == 0) {
+    //     stbuf->st_mode = S_IFREG | 0444;
+    //     stbuf->st_nlink = 1;
+    //     stbuf->st_size = strlen(hello_str);
+    // } else {
+    //     res = -ENOENT;
+    // }
+
+    // return res;
 }
 
 static int hello_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -83,6 +93,6 @@ int main(int argc, char **argv) {
     hello_operations.readdir = hello_readdir;
     hello_operations.open = hello_open;
     hello_operations.read = hello_read;
-    
+
     return fuse_main(argc, argv, &hello_operations, NULL);
 }
