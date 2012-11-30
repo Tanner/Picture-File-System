@@ -17,25 +17,15 @@ INCS = include
 LIBS = fuse
 # The static libraries to include
 SLIBS =
-# The target architecture
-ARCH = x64
 
 # The next blocks change some variables depending on the build type
 ifeq ($(TYPE), debug)
-CCPARAM = -std=c++11 -Wall -g -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
-ifeq ($(C++), clang++)
-LDPARAM = -stdlib=libc++
-CCPARAM += -stdlib=libc++
-endif
+CCPARAM = -Wall -g -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
 MACROS =
 endif
 
 ifeq ($(TYPE), release)
-CCPARAM = -std=c++11 -Wall -O2 -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
-ifeq ($(C++), clang++)
-LDPARAM = -stdlib=libc++
-CCPARAM += -stdlib=libc++
-endif
+CCPARAM = -Wall -O2 -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
 MACROS = NDEBUG
 endif
 
