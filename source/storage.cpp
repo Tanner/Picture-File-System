@@ -39,6 +39,26 @@ int Storage::add_picture(string name, const char* data, size_t size, int year, s
     return 0;
 }
 
+int Storage::get_years() {
+    sqlite3 *db = open();
+    sqlite3_stmt *stmt;
+
+    char *select_query = "SELECT year from photos";
+    if (sqlite3_prepare(db, select_query, -1, &stmt, 0) != SQLITE_OK) {
+        cout << "Could not select years from database" << endl;
+        
+        return -1;
+    }
+
+    int count = sqlite3_column_count(stmt);
+
+    cout << "Found " << count << "columns" << endl;
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
 sqlite3* Storage::open() {
     sqlite3 *db;
 
