@@ -10,7 +10,7 @@ namespace pfs {
 
     class Storage {
     public:
-        static int add_picture(string name, const char* data, size_t size);
+        static int add_picture(string name, const char* data, size_t size, int year, string month);
     private:
         static sqlite3* open();
         static string get_database_path();
