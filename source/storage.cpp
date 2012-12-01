@@ -28,8 +28,13 @@ int Storage::add_picture(string name, const char* data, size_t size, int year, s
 
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         cout << "Could not insert photo in database" << endl;
+
+        sqlite3_close(db);
+
         return -1;
     }
+
+    sqlite3_close(db);
 
     return 0;
 }
