@@ -14,7 +14,7 @@ DIRS = source
 # Which directories contain header files
 INCS = include
 # Which libraries are linked
-LIBS = fuse
+LIBS = fuse sqlite3
 # The static libraries to include
 SLIBS =
 
