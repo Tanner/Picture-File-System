@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <vector>
 
 #include "entity.h"
@@ -29,16 +30,22 @@ auto_ptr<Entity> Entity::entity_for_path(string path) {
     }
 
     else if (path.find("/Dates") == 0) {
-        RegexMatcher dates_regex("/Dates/([0-9]+)/?([A-Za-z]*)");
-        vector<string> matches(dates_regex.find_matches(path));
-        if (matches.size() == 2) {
-            YearDirectoryEntity* year_dir = new YearDirectoryEntity(path, matches[1]);
-            year_dir->set_permissions(0755);
-            return auto_ptr<Entity>(year_dir);
-        } else if (matches.size() == 3) {
-            MonthDirectoryEntity* month_dir = new MonthDirectoryEntity(path, matches[1], matches[2]);
+        RegexMatcher month_regex("/Dates/([0-9]+)/([A-Za-z]+)$");
+        vector<string> month_matches(month_regex.find_matches(path));
+
+        if (month_matches.size() > 0) {
+            MonthDirectoryEntity* month_dir = new MonthDirectoryEntity(path, month_matches[1], month_matches[2]);
             month_dir->set_permissions(0755);
             return auto_ptr<Entity>(month_dir);
+        } else {
+            RegexMatcher year_regex("/Dates/([0-9]+)$");
+            vector<string> year_matches(year_regex.find_matches(path));
+
+            if (year_matches.size() > 0) {
+                YearDirectoryEntity* year_dir = new YearDirectoryEntity(path, year_matches[1]);
+                year_dir->set_permissions(0755);
+                return auto_ptr<Entity>(year_dir);
+            }
         }
     }
 
