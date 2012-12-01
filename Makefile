@@ -1,6 +1,6 @@
 # Makefile based off of example from http://content.gpwiki.org/index.php/Makefile
 
-MOUNTED = /tmp/pfs
+MOUNTED = ~/pfs/
 
 # The compiler
 C++ = g++
