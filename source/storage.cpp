@@ -45,6 +45,7 @@ vector<int> Storage::get_years() {
 
     vector<int> years;
 
+    // Run the query
     char *select_query = "SELECT year from photos";
 
     cout << select_query << endl;
@@ -55,6 +56,7 @@ vector<int> Storage::get_years() {
         return years;
     }
 
+    // Add all the years to our vector
     int result = 0;
 
     do {
@@ -66,6 +68,18 @@ vector<int> Storage::get_years() {
     } while (result != SQLITE_DONE);
 
     sqlite3_close(db);
+
+    // Remove duplicate elements
+    for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
+        for (vector<int>::iterator j = i + 1; j != years.end(); ++j) {
+            if (*i == *j) {
+                years.erase(j);
+
+                i = years.begin();
+                j = years.begin();
+            }
+        }
+    }
 
     return years;
 }
