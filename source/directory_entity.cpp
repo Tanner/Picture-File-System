@@ -4,7 +4,7 @@
 using namespace pfs;
 using namespace std;
 
-DirectoryEntity::DirectoryEntity(string& path) : Entity(path) {
+DirectoryEntity::DirectoryEntity(string name) : Entity(name) {
 
 }
 

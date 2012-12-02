@@ -16,40 +16,24 @@
 using namespace pfs;
 using namespace std;
 
-auto_ptr<Entity> Entity::entity_for_path(string path) {
-    if (path == "/") {
-        RootEntity* root = new RootEntity(path);
-        root->set_permissions(0755);
-        return auto_ptr<Entity>(root);
-    }
+Entity::Entity(string name) : name_(name) {
 
-    else if (path == "/Dates") {
-        DatesDirectoryEntity* dates_dir = new DatesDirectoryEntity(path);
-        dates_dir->set_permissions(0755);
-        return auto_ptr<Entity>(dates_dir);
-    }
+}
 
-    else if (path.find("/Dates") == 0) {
-        RegexMatcher month_regex("/Dates/([0-9]+)/([A-Za-z]+)$");
-        vector<string> month_matches(month_regex.find_matches(path));
+auto_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
+    return auto_ptr<Entity>(this);
+}
 
-        if (month_matches.size() > 0) {
-            MonthDirectoryEntity* month_dir = new MonthDirectoryEntity(path, month_matches[1], month_matches[2]);
-            month_dir->set_permissions(0755);
-            return auto_ptr<Entity>(month_dir);
-        } else {
-            RegexMatcher year_regex("/Dates/([0-9]+)$");
-            vector<string> year_matches(year_regex.find_matches(path));
+vector<Entity> Entity::get_children() {
+    return vector<Entity>();
+}
 
-            if (year_matches.size() > 0) {
-                YearDirectoryEntity* year_dir = new YearDirectoryEntity(path, year_matches[1]);
-                year_dir->set_permissions(0755);
-                return auto_ptr<Entity>(year_dir);
-            }
-        }
-    }
+int Entity::getattr(struct stat* stbuf) {
+    return -ENOENT;
+}
 
-    return auto_ptr<Entity>(new NullEntity(path));
+int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+    return -ENOENT;
 }
 
 int Entity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -64,7 +48,7 @@ int Entity::open(struct fuse_file_info* fi) {
     return 0;
 }
 
-Entity::Entity(string& path) : path_(path) {
-
+int Entity::mknod(mode_t mode, dev_t rdev) {
+    return -ENOENT;
 }
 

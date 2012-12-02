@@ -8,7 +8,7 @@
 using namespace pfs;
 using namespace std;
 
-DatesDirectoryEntity::DatesDirectoryEntity(string& path) : DirectoryEntity(path) {
+DatesDirectoryEntity::DatesDirectoryEntity(string name) : DirectoryEntity(name) {
 
 }
 
