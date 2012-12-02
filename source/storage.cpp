@@ -84,6 +84,55 @@ vector<int> Storage::get_years() {
     return years;
 }
 
+vector<string> Storage::get_months(int year) {
+    sqlite3 *db = open();
+    sqlite3_stmt *statement;
+
+    vector<string> months;
+
+    // Run the query
+    stringstream select_query;
+    select_query << "SELECT month from photos WHERE (year=" << year << ")";
+
+    cout << select_query.str() << endl;
+
+    if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+        stringstream message;
+        message << "Could not select months for year " << year << " from database";
+
+        cout << message.str() << endl;
+        
+        return months;
+    }
+
+    // Add all the months to our vector
+    int result = 0;
+
+    do {
+        result = sqlite3_step(statement);
+        
+        if (result == SQLITE_ROW) {
+            months.push_back((const char *) sqlite3_column_text(statement, 0));
+        }
+    } while (result != SQLITE_DONE);
+
+    sqlite3_close(db);
+
+    // Remove duplicate elements
+    for (vector<string>::iterator i = months.begin(); i != months.end(); ++i) {
+        for (vector<string>::iterator j = i + 1; j != months.end(); ++j) {
+            if (*i == *j) {
+                months.erase(j);
+
+                i = months.begin();
+                j = months.begin();
+            }
+        }
+    }
+
+    return months;
+}
+
 sqlite3* Storage::open() {
     sqlite3 *db;
 
