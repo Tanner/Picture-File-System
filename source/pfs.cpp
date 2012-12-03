@@ -31,26 +31,26 @@ int pfs::getattr(const char* path, struct stat* stbuf) {
 
     shared_ptr<Entity> entity(RootEntity::get()->route_path(path));
     cout << entity->get_name() << endl;
-    return entity.get()->getattr(stbuf);
+    return entity->getattr(stbuf);
 }
 
 int pfs::readdir(const char* path, void* buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* fi) {
     shared_ptr<Entity> entity(RootEntity::get()->route_path(path));
-    return entity.get()->readdir(buf, filler, offset, fi);
+    return entity->readdir(buf, filler, offset, fi);
 }
 
 int pfs::open(const char* path, struct fuse_file_info* fi) {
     shared_ptr<Entity> entity(RootEntity::get()->route_path(path));
-    return entity.get()->open(fi);
+    return entity->open(fi);
 }
 
 int pfs::read(const char* path, char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
     shared_ptr<Entity> entity(RootEntity::get()->route_path(path));
-    return entity.get()->read(buf, size, offset, fi);
+    return entity->read(buf, size, offset, fi);
 }
 
 int pfs::mknod(const char* path, mode_t mode, dev_t rdev) {
     shared_ptr<Entity> entity(RootEntity::get()->route_path(path));
-    return entity.get()->mknod(mode, rdev);
+    return entity->mknod(mode, rdev);
 }
 

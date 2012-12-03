@@ -17,8 +17,8 @@ namespace pfs {
 	class Entity {
 	public:
 		virtual ~Entity() { }
-        virtual shared_ptr<Entity> route_path(string full_path, string relative_path);
-        virtual vector<Entity> get_children();
+        virtual shared_ptr<Entity> route_path(string full_path, string relative_path) = 0;
+        virtual vector<shared_ptr<Entity> > get_children();
 		virtual int getattr(struct stat* stbuf);
         virtual int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
 		virtual int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);

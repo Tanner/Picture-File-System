@@ -8,7 +8,7 @@ namespace pfs {
     using namespace std;
 
     string root_for_path(string path) {
-        RegexMatcher directory_regex("/([A-Za-z0-9]+)/?");
+        RegexMatcher directory_regex("/([A-Za-z0-9.-_]+)");
         vector<string> matches(directory_regex.find_matches(path));
         if (matches.size() >= 2) {
             return matches[1];

@@ -20,12 +20,8 @@ Entity::Entity(string name) : name_(name) {
 
 }
 
-shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
-    return shared_ptr<Entity>(this);
-}
-
-vector<Entity> Entity::get_children() {
-    return vector<Entity>();
+vector<shared_ptr<Entity> > Entity::get_children() {
+    return vector<shared_ptr<Entity> >();
 }
 
 int Entity::getattr(struct stat* stbuf) {

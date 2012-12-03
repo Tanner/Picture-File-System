@@ -9,7 +9,7 @@ NullEntity::NullEntity(string path) : Entity(path) {
 }
 
 shared_ptr<Entity> NullEntity::route_path(string full_path, string relative_path) {
-    return shared_ptr<Entity>(this);
+    return shared_ptr<Entity>(new NullEntity(*this));
 }
 
 int NullEntity::getattr(struct stat* stbuf) {

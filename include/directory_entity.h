@@ -10,6 +10,7 @@ namespace pfs {
 	class DirectoryEntity : public Entity {
 	public:
 		DirectoryEntity(string name);
+		shared_ptr<Entity> route_path(string full_path, string relative_path);
         int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
 		int getattr(struct stat* stbuf);
 		int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
