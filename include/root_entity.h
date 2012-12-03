@@ -9,11 +9,11 @@ namespace pfs {
 
 	class RootEntity : public DirectoryEntity {
 	public:
-        static shared_ptr<RootEntity> get();
+		RootEntity();
+		Entity* clone();
         shared_ptr<Entity> route_path(string full_path);
         vector<shared_ptr<Entity> > get_children();
     private:
-		RootEntity(string name);
         vector<shared_ptr<Entity> > children_;
 	};
 }

@@ -8,14 +8,6 @@ DirectoryEntity::DirectoryEntity(string name) : Entity(name) {
 
 }
 
-Entity* DirectoryEntity::clone() {
-	return new DirectoryEntity(*this);
-}
-
-shared_ptr<Entity> DirectoryEntity::route_path(string full_path, string relative_path) {
-	return shared_ptr<Entity>(new DirectoryEntity(*this));
-}
-
 int DirectoryEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
     filler(buf, ".", NULL, 0);
     filler(buf, "..", NULL, 0);

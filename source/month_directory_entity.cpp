@@ -3,29 +3,26 @@
 
 #include "month_directory_entity.h"
 #include "storage.h"
-#include "photo.h"
+#include "picture_entity.h"
 
 using namespace pfs;
 using namespace std;
 
-MonthDirectoryEntity::MonthDirectoryEntity(string& path, string year, string month) : DirectoryEntity(path), year_(year), month_(month) {
+MonthDirectoryEntity::MonthDirectoryEntity(int year, string month) : DirectoryEntity(month), year_(year), month_(month) {
 
 }
 
-int MonthDirectoryEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
-    DirectoryEntity::readdir(buf, filler, offset, fi);
+Entity* MonthDirectoryEntity::clone() {
+    return new MonthDirectoryEntity(*this);
+}
 
-    vector<Photo> photos(Storage::get_photos(atoi(year_.c_str()), month_));
-    for (vector<Photo>::iterator i = photos.begin(); i != photos.end(); ++i) {
-        filler(buf, i->get_name().c_str(), NULL, 0); 
+vector<shared_ptr<Entity> > MonthDirectoryEntity::get_children() {
+	vector<shared_ptr<Entity> > children;
+    vector<Photo> photos(Storage::get_photos(year_, month_));
+
+    for (Photo& p : photos) {
+    	children.push_back(shared_ptr<Entity>(new PictureEntity(p)));
     }
 
-    return 0;
+    return children;
 }
-
-int MonthDirectoryEntity::getattr(struct stat* stbuf) {
-	DirectoryEntity::getattr(stbuf);
-
-	return 0;
-}
-

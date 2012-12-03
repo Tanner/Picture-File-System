@@ -13,6 +13,10 @@ DatesDirectoryEntity::DatesDirectoryEntity(string name) : DirectoryEntity(name) 
 
 }
 
+Entity* DatesDirectoryEntity::clone() {
+    return new DatesDirectoryEntity(*this);
+}
+
 shared_ptr<Entity> DatesDirectoryEntity::route_path(string full_path, string relative_path) {
     return shared_ptr<Entity>(new DatesDirectoryEntity(*this));
 }

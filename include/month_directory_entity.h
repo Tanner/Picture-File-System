@@ -9,11 +9,11 @@ namespace pfs {
 
 	class MonthDirectoryEntity : public DirectoryEntity {
 	public:
-		MonthDirectoryEntity(string& path, string year, string month);
-        int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
-		int getattr(struct stat* stbuf);
+		MonthDirectoryEntity(int year, string month);
+		Entity* clone();
+		vector<shared_ptr<Entity> > get_children();
     private:
-        string year_;
+        int year_;
         string month_;
 	};
 }

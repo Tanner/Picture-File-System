@@ -4,7 +4,7 @@
 using namespace pfs;
 using namespace std;
 
-FileEntity::FileEntity(string& path) : Entity(path) {
+FileEntity::FileEntity(string name) : Entity(name) {
 
 }
 

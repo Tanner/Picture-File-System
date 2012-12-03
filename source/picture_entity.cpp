@@ -6,8 +6,12 @@ using namespace std;
 
 const string test_string = "Hello, World!";
 
-PictureEntity::PictureEntity(string& path) : FileEntity(path) {
+PictureEntity::PictureEntity(Photo& p) : FileEntity(p.get_name()) {
     
+}
+
+Entity* PictureEntity::clone() {
+    return new PictureEntity(*this);
 }
 
 size_t PictureEntity::length() {

@@ -9,7 +9,7 @@ namespace pfs {
     
     class FileEntity : public Entity {
     public:
-        FileEntity(string& path);
+        FileEntity(string path);
         int getattr(struct stat* stbuf);
         int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     protected:

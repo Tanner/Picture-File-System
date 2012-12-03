@@ -3,13 +3,15 @@
 #define PICTURE_ENTITY_H_
 
 #include "file_entity.h"
+#include "photo.h"
 
 namespace pfs {
     using namespace std;
     
     class PictureEntity : public FileEntity {
     public:
-        PictureEntity(string& path);
+        PictureEntity(Photo& p);
+        Entity* clone();
     protected:
         size_t length();
         const char* content();

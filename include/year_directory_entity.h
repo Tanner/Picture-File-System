@@ -10,6 +10,8 @@ namespace pfs {
 	class YearDirectoryEntity : public DirectoryEntity {
 	public:
 		YearDirectoryEntity(int year);
+		Entity* clone();
+		vector<shared_ptr<Entity> > get_children();
     private:
         int year_;
 	};
