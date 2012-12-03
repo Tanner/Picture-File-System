@@ -4,3 +4,4 @@ pfs
 /.make-*
 *.log
 *.swp
+/Makefile
