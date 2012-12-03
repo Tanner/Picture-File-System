@@ -12,8 +12,8 @@ int Storage::add_picture(string name, const char* data, size_t size, int year, s
     sqlite3 *db = open();
 
     // Init with default tables if they do not exist.
-    char *create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month TEXT NOT NULL)";
-    sqlite3_exec(db, create_table_query, 0, 0, 0);
+    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month TEXT NOT NULL)";
+    sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     // Insert the new data
     stringstream insert_query;
@@ -46,11 +46,11 @@ vector<int> Storage::get_years() {
     vector<int> years;
 
     // Run the query
-    char *select_query = "SELECT year from photos";
+    string select_query = "SELECT year from photos";
 
     cout << select_query << endl;
 
-    if (sqlite3_prepare(db, select_query, -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db, select_query.c_str(), -1, &statement, 0) != SQLITE_OK) {
         cout << "Could not select years from database" << endl;
         
         return years;
