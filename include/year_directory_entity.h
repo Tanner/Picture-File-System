@@ -9,11 +9,9 @@ namespace pfs {
 
 	class YearDirectoryEntity : public DirectoryEntity {
 	public:
-		YearDirectoryEntity(string& path, string year);
-        int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
-		int getattr(struct stat* stbuf);
+		YearDirectoryEntity(int year);
     private:
-        string year_;
+        int year_;
 	};
 }
 

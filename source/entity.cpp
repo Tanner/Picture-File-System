@@ -20,6 +20,23 @@ Entity::Entity(string name) : name_(name) {
 
 }
 
+shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
+    string root(root_for_path(relative_path));
+    
+    if (root == name_) {
+        return shared_ptr<Entity>(clone());
+    }
+
+    vector<shared_ptr<Entity> > children(get_children());
+    for (vector<shared_ptr<Entity> >::iterator i = children.begin(); i != children.end(); ++i) {
+        if (i->get()->get_name() == relative_path) {
+            return i->get()->route_path(full_path, relative_path.substr(root.length())); 
+        }
+    }
+    
+    return shared_ptr<Entity>(new NullEntity(relative_path));
+}
+
 vector<shared_ptr<Entity> > Entity::get_children() {
     return vector<shared_ptr<Entity> >();
 }

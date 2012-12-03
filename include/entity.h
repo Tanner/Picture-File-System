@@ -11,13 +11,16 @@
 #include <memory>
 #include <vector>
 
+#include "util.h"
+
 namespace pfs {
 	using namespace std;
 
 	class Entity {
 	public:
 		virtual ~Entity() { }
-        virtual shared_ptr<Entity> route_path(string full_path, string relative_path) = 0;
+		virtual Entity* clone() = 0;
+        virtual shared_ptr<Entity> route_path(string full_path, string relative_path);
         virtual vector<shared_ptr<Entity> > get_children();
 		virtual int getattr(struct stat* stbuf);
         virtual int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);

@@ -8,6 +8,10 @@ NullEntity::NullEntity(string path) : Entity(path) {
 
 }
 
+Entity* NullEntity::clone() {
+	return new NullEntity(*this);
+}
+
 shared_ptr<Entity> NullEntity::route_path(string full_path, string relative_path) {
     return shared_ptr<Entity>(new NullEntity(*this));
 }

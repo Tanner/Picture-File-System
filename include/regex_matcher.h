@@ -1,6 +1,6 @@
 
 #ifndef REGEX_MATCHER_H_
-#define REGEX_MATCH_ERH_
+#define REGEX_MATCHER_H_
 
 #include <string>
 #include <vector>

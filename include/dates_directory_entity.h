@@ -10,8 +10,8 @@ namespace pfs {
 	class DatesDirectoryEntity : public DirectoryEntity {
 	public:
 		DatesDirectoryEntity(string path);
-        int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
-		int getattr(struct stat* stbuf);
+		shared_ptr<Entity> route_path(string full_path, string relative_path);
+		vector<shared_ptr<Entity> > get_children();
 	};
 }
 
