@@ -8,8 +8,8 @@ NullEntity::NullEntity(string path) : Entity(path) {
 
 }
 
-auto_ptr<Entity> NullEntity::route_path(string full_path, string relative_path) {
-    return auto_ptr<Entity>(this);
+shared_ptr<Entity> NullEntity::route_path(string full_path, string relative_path) {
+    return shared_ptr<Entity>(this);
 }
 
 int NullEntity::getattr(struct stat* stbuf) {

@@ -20,8 +20,8 @@ Entity::Entity(string name) : name_(name) {
 
 }
 
-auto_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
-    return auto_ptr<Entity>(this);
+shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
+    return shared_ptr<Entity>(this);
 }
 
 vector<Entity> Entity::get_children() {

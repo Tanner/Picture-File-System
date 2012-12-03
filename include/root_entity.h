@@ -9,8 +9,8 @@ namespace pfs {
 
 	class RootEntity : public DirectoryEntity {
 	public:
-        static auto_ptr<RootEntity> get();
-        auto_ptr<Entity> route_path(string full_path);
+        static shared_ptr<RootEntity> get();
+        shared_ptr<Entity> route_path(string full_path);
         vector<Entity> get_children();
         int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
 		int getattr(struct stat* stbuf);

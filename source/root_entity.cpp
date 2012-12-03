@@ -10,8 +10,8 @@
 using namespace pfs;
 using namespace std;
 
-auto_ptr<RootEntity> RootEntity::get() { 
-    static auto_ptr<RootEntity> singleton(new RootEntity("/"));
+shared_ptr<RootEntity> RootEntity::get() { 
+    static shared_ptr<RootEntity> singleton(new RootEntity("/"));
     return singleton;
 }
 
@@ -19,11 +19,11 @@ RootEntity::RootEntity(string path) : DirectoryEntity(path) {
     children_.push_back(DirectoryEntity("Dates"));
 }
 
-auto_ptr<Entity> RootEntity::route_path(string path) {
+shared_ptr<Entity> RootEntity::route_path(string path) {
     string root(root_for_path(path));
     
     if (path == name_) {
-        return auto_ptr<Entity>(this);
+        return RootEntity::get();
     }
 
     vector<Entity> children(get_children());
@@ -33,7 +33,7 @@ auto_ptr<Entity> RootEntity::route_path(string path) {
         }
     }
     
-    return auto_ptr<Entity>(new NullEntity(path));
+    return shared_ptr<Entity>(new NullEntity(path));
 }
 
 vector<Entity> RootEntity::get_children() {
