@@ -3,27 +3,47 @@
 
 #include "util.h"
 
+#include <iostream>
+
 using namespace pfs;
 using namespace std;
 
 string pfs::root_for_path(string path) {
-    RegexMatcher directory_regex("/([A-Za-z0-9.-_]+)");
-    vector<string> matches(directory_regex.find_matches(path));
-    if (matches.size() >= 2) {
-        return matches[1];
+    if (path.length() == 1 && path[0] == '/') {
+        return "";
     }
 
-    return "";
+    auto second_forward_slash = -1;
+    for (unsigned int i = 1; i < path.length(); ++i) {
+        if (path[i] == '/') {
+            second_forward_slash = i;
+            break;
+        }
+    }
+
+    if (second_forward_slash < 0) {
+        return path.substr(1, path.length());
+    } else {
+        return path.substr(1, second_forward_slash - 1);
+    }
 }
 
-string pfs::name_for_path(string path) {
-    RegexMatcher directory_regex("/([A-Za-z0-9]+)/?$");
-    vector<string> matches(directory_regex.find_matches(path));
-    if (matches.size() >= 2) {
-        return matches[1];
+string pfs::deeper_path(string path) {
+    string root = pfs::root_for_path(path);
+
+    return path.substr(root.length() + 1, path.length());
+}
+
+int pfs::path_depth(string path) {
+    int depth = 0;
+
+    for (unsigned int i = 0; i < path.length(); ++i) {
+        if (path[i] == '/') {
+            ++depth;
+        }
     }
 
-    return "";
+    return depth - 1;
 }
 
 string pfs::int_to_str(int i) {
