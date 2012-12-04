@@ -10,7 +10,6 @@ using namespace std;
 
 NewFileEntity::NewFileEntity(string name) : FileEntity(name) {
 	permissions_ = 666;
-	cout << "[NewFileEntity] " << name << endl;
 }
 
 Entity* NewFileEntity::clone() {

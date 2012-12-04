@@ -36,7 +36,7 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
     }
 
 	if (pfs::path_depth(path) == 0) {
-		return shared_ptr<Entity>(new NewFileEntity(path));
+		return shared_ptr<Entity>(new NewFileEntity(pfs::root_for_path(path)));
 	}
 
     return shared_ptr<Entity>(new NullEntity(path));
