@@ -1,4 +1,6 @@
 
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <stdlib.h>
 #include <sstream>
@@ -10,9 +12,6 @@ using namespace std;
 
 int Storage::add_picture(Photo photo) {
     sqlite3 *db = open();
-
-    cout << "\tADD PIC" << endl;
-    cout << data << endl;
 
     // Insert the new data
     stringstream insert_query;
@@ -162,9 +161,14 @@ vector<Photo> Storage::get_photos(int year, int month) {
         if (result == SQLITE_ROW) {
             string name = (const char*) sqlite3_column_text(statement, 0);
             int size = sqlite3_column_int(statement, 1);
-            const char* data = (const char*)sqlite3_column_blob(statement, 2);
+            const void* blob = sqlite3_column_blob(statement, 2);
 
-            photos.push_back(Photo(name, data, size));
+            char* blob_copy = (char*)malloc(size);
+            memcpy(blob_copy, blob, size);
+            string data(blob_copy, size);
+            free(blob_copy);
+
+            photos.push_back(Photo(name, data));
         }
     } while (result != SQLITE_DONE);
 

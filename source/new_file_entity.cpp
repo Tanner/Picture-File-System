@@ -60,7 +60,7 @@ int NewFileEntity::open(struct fuse_file_info* fi) {
 }
 
 int NewFileEntity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
-    content_.append(buf);
+    content_.append(buf, size);
 
 	cout << "NEWFILE write" << this << endl;
     cout << content_ << endl;

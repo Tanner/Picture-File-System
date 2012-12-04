@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include <vector>
 
 #include "month_directory_entity.h"
@@ -22,6 +23,8 @@ vector<shared_ptr<Entity> > MonthDirectoryEntity::get_children() {
     vector<Photo> photos(Storage::get_photos(year_, month_));
 
     for (auto i = photos.begin(); i != photos.end(); ++i) {
+    	// cout << endl << endl << "PHOTO DATA" << endl;
+    	// cout << i->data() << endl;
     	children.push_back(shared_ptr<Entity>(new PictureEntity(*i)));
     }
 

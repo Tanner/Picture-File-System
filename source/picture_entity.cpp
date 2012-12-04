@@ -15,11 +15,10 @@ Entity* PictureEntity::clone() {
 }
 
 size_t PictureEntity::length() {
-    return photo_.get_size();
+    return photo_.size();
 }
 
 const char* PictureEntity::content() {
-	cout << endl<<endl<<"PICTUREENTITY DATA " << photo_.get_data() << endl;
-    return photo_.get_data();
+    return photo_.data();
 }
 

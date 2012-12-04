@@ -4,7 +4,7 @@
 using namespace pfs;
 using namespace std;
 
-Photo::Photo(string& name, const char* data, size_t size) : name_(name), data_(data), size_(size) {
+Photo::Photo(string& name, string data) : name_(name), data_(data) {
 
 }
 
@@ -12,12 +12,12 @@ string Photo::get_name() {
     return name_;
 }
 
-const char* Photo::get_data() {
-    return data_;
+const char* Photo::data() {
+    return data_.c_str();
 }
 
-int Photo::get_size() {
-    return size_;
+int Photo::size() {
+    return data_.length();
 }
 
 int Photo::get_month() {
