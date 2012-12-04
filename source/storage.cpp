@@ -11,10 +11,6 @@ using namespace std;
 int Storage::add_picture(string name, const char* data, size_t size, int year, string month) {
     sqlite3 *db = open();
 
-    // Init with default tables if they do not exist.
-    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month TEXT NOT NULL)";
-    sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
-
     // Insert the new data
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
@@ -181,6 +177,10 @@ sqlite3* Storage::open() {
         cout << "Could not open database at " << get_database_path() << endl;
         return NULL;
     }
+    
+    // Init with default tables if they do not exist.
+    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month TEXT NOT NULL)";
+    sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     return db;
 }
