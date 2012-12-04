@@ -33,6 +33,7 @@ namespace pfs {
 		virtual int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
         virtual int write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi);
         virtual int mknod(mode_t mode, dev_t rdev);
+        virtual int release(struct fuse_file_info* fi);
         string get_name() {
             return name_;
         }

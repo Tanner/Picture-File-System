@@ -89,3 +89,6 @@ int Entity::mknod(mode_t mode, dev_t rdev) {
     return -1;
 }
 
+int Entity::release(struct fuse_file_info* fi) {
+    return -1;
+}

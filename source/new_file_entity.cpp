@@ -3,6 +3,7 @@
 
 #include "new_file_entity.h"
 #include "root_entity.h"
+#include "storage.h"
 
 using namespace pfs;
 using namespace std;
@@ -66,4 +67,10 @@ int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
 	RootEntity().add_file(shared_ptr<Entity>(new NewFileEntity(*this)));
 
     return 0;
+}
+
+int NewFileEntity::release(struct fuse_file_info* fi) {
+	Storage::add_picture(name_, content_.c_str(), content_.length(), 1984, "September");
+
+	return 0;
 }

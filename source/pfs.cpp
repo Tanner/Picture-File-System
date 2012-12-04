@@ -18,6 +18,7 @@ namespace pfs {
     int read(const char* path, char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     int write(const char* path, const char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     int mknod(const char* path, mode_t mode, dev_t rdev);
+    int release(const char* path, struct fuse_file_info* fi);
 }
 
 static struct fuse_operations operations;
@@ -34,6 +35,7 @@ int main(int argc, char** argv) {
     operations.read = pfs::read;
     operations.write = pfs::write;
     operations.mknod = pfs::mknod;
+    operations.release = pfs::release;
 
     return fuse_main(argc, argv, &operations, NULL);
 }
@@ -95,3 +97,7 @@ int pfs::mknod(const char* path, mode_t mode, dev_t rdev) {
     return entity->mknod(mode, rdev);
 }
 
+int pfs::release(const char* path, struct fuse_file_info* fi) {
+    shared_ptr<Entity> entity(RootEntity().route_path(path));
+    return entity->release(fi);
+}

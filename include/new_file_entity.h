@@ -20,6 +20,7 @@ namespace pfs {
 		int open(struct fuse_file_info* fi);
 		int write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi);
 		int mknod(mode_t mode, dev_t rdev);
+		int release(struct fuse_file_info* fi);
 	protected:
 		const char* content();
 		size_t length();
