@@ -13,7 +13,7 @@ namespace pfs {
 
     class Storage {
     public:
-        static int add_picture(string name, const char* data, size_t size, int year, string month);
+        static int add_picture(Photo photo);
         static vector<int> get_years();
         static vector<string> get_months(int year);
         static vector<Photo> get_photos(int year, string month);

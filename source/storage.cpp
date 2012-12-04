@@ -8,17 +8,17 @@
 using namespace pfs;
 using namespace std;
 
-int Storage::add_picture(string name, const char* data, size_t size, int year, string month) {
+int Storage::add_picture(Photo photo) {
     sqlite3 *db = open();
 
     // Insert the new data
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
-    insert_query << "'" << name << "', ";
-    insert_query << size << ", ";
-    insert_query << "'" << data << "', ";
-    insert_query << year << ", ";
-    insert_query << "'" << month << "') ";
+    insert_query << "'" << photo.get_name() << "', ";
+    insert_query << photo.get_size() << ", ";
+    insert_query << "'" << photo.get_data() << "', ";
+    insert_query << photo.get_year() << ", ";
+    insert_query << "'" << photo.get_month() << "') ";
 
     cout << insert_query.str() << endl;
 

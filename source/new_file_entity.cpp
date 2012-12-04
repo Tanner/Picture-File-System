@@ -3,6 +3,7 @@
 
 #include "new_file_entity.h"
 #include "root_entity.h"
+#include "photo.h"
 #include "storage.h"
 
 using namespace pfs;
@@ -69,7 +70,8 @@ int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
 }
 
 int NewFileEntity::release(struct fuse_file_info* fi) {
-	Storage::add_picture(name_, content_.c_str(), content_.length(), 1984, "September");
+    Photo photo = Photo(name_, (void *) content_.c_str(), content_.length());
+	Storage::add_picture(photo);
 
 	return 0;
 }
