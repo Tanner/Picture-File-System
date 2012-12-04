@@ -13,6 +13,7 @@ namespace pfs {
 		Entity* clone();
         shared_ptr<Entity> route_path(string full_path);
         vector<shared_ptr<Entity> > get_children();
+        void add_file(shared_ptr<Entity> child);
     private:
         vector<shared_ptr<Entity> > children_;
 	};

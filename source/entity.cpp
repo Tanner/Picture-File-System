@@ -20,17 +20,21 @@ Entity::Entity(string name) : name_(name) {
 
 }
 
-shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {
-    string root(root_for_path(relative_path));
-    
-    if (root == name_) {
+shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {    
+    cout << "PATH = " << relative_path << endl;
+
+    if (relative_path.length() == 0) {
+        cout << name_ << " WILL HANDLE" << endl;
+
         return shared_ptr<Entity>(clone());
     }
 
+    cout << "NAME FOR PATH = " << pfs::root_for_path(relative_path) << endl;
+
     vector<shared_ptr<Entity> > children(get_children());
-    for (vector<shared_ptr<Entity> >::iterator i = children.begin(); i != children.end(); ++i) {
-        if (i->get()->get_name() == relative_path) {
-            return i->get()->route_path(full_path, relative_path.substr(root.length())); 
+    for (auto i = children.begin(); i != children.end(); ++i) {
+        if (i->get()->get_name() == pfs::root_for_path(relative_path)) {
+            return i->get()->route_path(full_path, pfs::deeper_path(relative_path)); 
         }
     }
     

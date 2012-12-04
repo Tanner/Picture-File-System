@@ -17,10 +17,6 @@ Entity* DatesDirectoryEntity::clone() {
     return new DatesDirectoryEntity(*this);
 }
 
-shared_ptr<Entity> DatesDirectoryEntity::route_path(string full_path, string relative_path) {
-    return shared_ptr<Entity>(new DatesDirectoryEntity(*this));
-}
-
 vector<shared_ptr<Entity> > DatesDirectoryEntity::get_children() {
     vector<shared_ptr<Entity >> children;
     vector<int> years(Storage::get_years());

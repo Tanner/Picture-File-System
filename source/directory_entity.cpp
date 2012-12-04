@@ -5,7 +5,7 @@ using namespace pfs;
 using namespace std;
 
 DirectoryEntity::DirectoryEntity(string name) : Entity(name) {
-
+    permissions_ = 0755;
 }
 
 int DirectoryEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
@@ -22,7 +22,7 @@ int DirectoryEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, st
 
 int DirectoryEntity::getattr(struct stat* stbuf) {
 	stbuf->st_mode = S_IFDIR | permissions_;
-	stbuf->st_nlink = 2;
+	stbuf->st_nlink = 2 + get_children().size();
 
 	return 0;
 }

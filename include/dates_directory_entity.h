@@ -11,7 +11,6 @@ namespace pfs {
 	public:
 		DatesDirectoryEntity(string path);
 		Entity* clone();
-		shared_ptr<Entity> route_path(string full_path, string relative_path);
 		vector<shared_ptr<Entity> > get_children();
 	};
 }
