@@ -11,6 +11,7 @@ namespace pfs {
     string deeper_path(string path);
     int path_depth(string path);
     string int_to_str(int i);
+    string month_to_str(int month);
 }
 
 #endif

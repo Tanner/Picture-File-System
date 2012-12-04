@@ -15,8 +15,8 @@ namespace pfs {
     public:
         static int add_picture(Photo photo);
         static vector<int> get_years();
-        static vector<string> get_months(int year);
-        static vector<Photo> get_photos(int year, string month);
+        static vector<int> get_months(int year);
+        static vector<Photo> get_photos(int year, int month);
     private:
         static sqlite3* open();
         static string get_database_path();

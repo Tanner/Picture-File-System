@@ -9,12 +9,12 @@ namespace pfs {
 
 	class MonthDirectoryEntity : public DirectoryEntity {
 	public:
-		MonthDirectoryEntity(int year, string month);
+		MonthDirectoryEntity(int year, int month);
 		Entity* clone();
 		vector<shared_ptr<Entity> > get_children();
     private:
         int year_;
-        string month_;
+        int month_;
 	};
 }
 

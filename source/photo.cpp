@@ -20,8 +20,8 @@ int Photo::get_size() {
     return size_;
 }
 
-string Photo::get_month() {
-    return "December";
+int Photo::get_month() {
+    return 12;
 }
 
 int Photo::get_year() {

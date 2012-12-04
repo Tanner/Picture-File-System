@@ -16,7 +16,7 @@ namespace pfs {
         string get_name();
         const void* get_data();
         int get_size();
-        string get_month();
+        int get_month();
         int get_year();
     protected:
         string name_;

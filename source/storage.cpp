@@ -80,11 +80,11 @@ vector<int> Storage::get_years() {
     return years;
 }
 
-vector<string> Storage::get_months(int year) {
+vector<int> Storage::get_months(int year) {
     sqlite3 *db = open();
     sqlite3_stmt *statement;
 
-    vector<string> months;
+    vector<int> months;
 
     // Run the query
     stringstream select_query;
@@ -108,15 +108,15 @@ vector<string> Storage::get_months(int year) {
         result = sqlite3_step(statement);
         
         if (result == SQLITE_ROW) {
-            months.push_back((const char *) sqlite3_column_text(statement, 0));
+            months.push_back(sqlite3_column_int(statement, 0));
         }
     } while (result != SQLITE_DONE);
 
     sqlite3_close(db);
 
     // Remove duplicate elements
-    for (vector<string>::iterator i = months.begin(); i != months.end(); ++i) {
-        for (vector<string>::iterator j = i + 1; j != months.end(); ++j) {
+    for (vector<int>::iterator i = months.begin(); i != months.end(); ++i) {
+        for (vector<int>::iterator j = i + 1; j != months.end(); ++j) {
             if (*i == *j) {
                 months.erase(j);
 
@@ -129,7 +129,7 @@ vector<string> Storage::get_months(int year) {
     return months;
 }
 
-vector<Photo> Storage::get_photos(int year, string month) {
+vector<Photo> Storage::get_photos(int year, int month) {
     sqlite3 *db = open();
     sqlite3_stmt *statement;
 
@@ -137,7 +137,7 @@ vector<Photo> Storage::get_photos(int year, string month) {
 
     // Run the query
     stringstream select_query;
-    select_query << "SELECT * from photos WHERE (year=" << year << " AND month='" << month << "')";
+    select_query << "SELECT * from photos WHERE (year=" << year << " AND month=" << month << ")";
 
     cout << select_query.str() << endl;
 
@@ -179,7 +179,7 @@ sqlite3* Storage::open() {
     }
     
     // Init with default tables if they do not exist.
-    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month TEXT NOT NULL)";
+    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
     sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     return db;

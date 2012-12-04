@@ -51,3 +51,13 @@ string pfs::int_to_str(int i) {
     ss << i;
     return ss.str();
 }
+
+string pfs::month_to_str(int month) {
+    struct tm time;
+    time.tm_mon = month - 1;
+
+    char buffer[20];
+    strftime(buffer, 20, "%B", &time);
+
+    return string(buffer);
+}

@@ -4,11 +4,12 @@
 #include "month_directory_entity.h"
 #include "storage.h"
 #include "picture_entity.h"
+#include "util.h"
 
 using namespace pfs;
 using namespace std;
 
-MonthDirectoryEntity::MonthDirectoryEntity(int year, string month) : DirectoryEntity(month), year_(year), month_(month) {
+MonthDirectoryEntity::MonthDirectoryEntity(int year, int month) : DirectoryEntity(month_to_str(month)), year_(year), month_(month) {
 
 }
 
