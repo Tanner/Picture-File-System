@@ -1,12 +1,12 @@
 
+#include <iostream>
+
 #include "picture_entity.h"
 
 using namespace pfs;
 using namespace std;
 
-const string test_string = "Hello, World!";
-
-PictureEntity::PictureEntity(Photo& p) : FileEntity(p.get_name()) {
+PictureEntity::PictureEntity(Photo& p) : FileEntity(p.get_name()), photo_(p) {
     
 }
 
@@ -15,10 +15,11 @@ Entity* PictureEntity::clone() {
 }
 
 size_t PictureEntity::length() {
-    return test_string.length();
+    return photo_.get_size();
 }
 
 const char* PictureEntity::content() {
-    return test_string.c_str();
+	cout << endl<<endl<<"PICTUREENTITY DATA " << photo_.get_data() << endl;
+    return photo_.get_data();
 }
 

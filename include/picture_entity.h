@@ -15,6 +15,8 @@ namespace pfs {
     protected:
         size_t length();
         const char* content();
+    private:
+    	Photo photo_;
     };
 }
 

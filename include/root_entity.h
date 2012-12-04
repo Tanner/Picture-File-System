@@ -9,13 +9,16 @@ namespace pfs {
 
 	class RootEntity : public DirectoryEntity {
 	public:
-		RootEntity();
+		static RootEntity* get();
 		Entity* clone();
         shared_ptr<Entity> route_path(string full_path);
         vector<shared_ptr<Entity> > get_children();
         void add_file(shared_ptr<Entity> child);
+        void remove_file(shared_ptr<Entity> child);
     private:
+		RootEntity();
         vector<shared_ptr<Entity> > children_;
+        static RootEntity* singleton;
 	};
 }
 

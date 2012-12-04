@@ -10,6 +10,17 @@
 using namespace pfs;
 using namespace std;
 
+RootEntity* RootEntity::singleton = nullptr;
+
+RootEntity* RootEntity::get() {
+    if (RootEntity::singleton == nullptr) {
+        cout << "ROOT IS NULL - MAKE SINGLETON" << endl;
+        RootEntity::singleton = new RootEntity();
+    }
+
+    return RootEntity::singleton;
+}
+
 RootEntity::RootEntity() : DirectoryEntity("") {
     children_.push_back(shared_ptr<Entity>(new DatesDirectoryEntity("Dates")));
 }
@@ -29,8 +40,13 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
     }
 
     vector<shared_ptr<Entity> > children(get_children());
+    cout << "ROOT HAS " << children.size() << " CHILDREN" << endl;
     for (auto i = children.begin(); i != children.end(); ++i) {
         if (i->get()->get_name() == root_for_path(path)) {
+            if (i->get()->get_name() == path.erase(0, 1)) {
+                return *i;
+            }
+
             return i->get()->route_path(path, pfs::deeper_path(path)); 
         }
     }
@@ -48,4 +64,13 @@ vector<shared_ptr<Entity> > RootEntity::get_children() {
 
 void RootEntity::add_file(shared_ptr<Entity> entity) {
 	children_.push_back(entity);
+}
+
+void RootEntity::remove_file(shared_ptr<Entity> entity) {
+    for (auto i = children_.begin(); i != children_.end(); ++i) {
+        if ((*i)->get_name() == entity->get_name()) {
+            children_.erase(i);
+            break;
+        }
+    }
 }

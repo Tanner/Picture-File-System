@@ -11,6 +11,9 @@ using namespace std;
 int Storage::add_picture(Photo photo) {
     sqlite3 *db = open();
 
+    cout << "\tADD PIC" << endl;
+    cout << data << endl;
+
     // Insert the new data
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
@@ -159,7 +162,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
         if (result == SQLITE_ROW) {
             string name = (const char*) sqlite3_column_text(statement, 0);
             int size = sqlite3_column_int(statement, 1);
-            const void* data = sqlite3_column_blob(statement, 2);
+            const char* data = (const char*)sqlite3_column_blob(statement, 2);
 
             photos.push_back(Photo(name, data, size));
         }

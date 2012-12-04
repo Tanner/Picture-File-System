@@ -54,24 +54,29 @@ int NewFileEntity::access(int mask) {
 }
 
 int NewFileEntity::open(struct fuse_file_info* fi) {
+	RootEntity::get()->add_file(shared_ptr<Entity>(new NewFileEntity(*this)));
+
 	return 0;
 }
 
 int NewFileEntity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
     content_.append(buf);
 
+	cout << "NEWFILE write" << this << endl;
+    cout << content_ << endl;
+
     return size;
 }
 
 int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
-	RootEntity().add_file(shared_ptr<Entity>(new NewFileEntity(*this)));
-
     return 0;
 }
 
 int NewFileEntity::release(struct fuse_file_info* fi) {
-    Photo photo = Photo(name_, (void *) content_.c_str(), content_.length());
+    Photo photo = Photo(name_, content_.c_str(), content_.length());
 	Storage::add_picture(photo);
+
+	RootEntity::get()->remove_file(shared_ptr<Entity>(new NewFileEntity(*this)));
 
 	return 0;
 }

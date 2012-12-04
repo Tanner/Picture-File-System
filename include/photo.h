@@ -11,16 +11,16 @@ namespace pfs {
     public:
         virtual ~Photo() { }
 
-        Photo(string& name, const void* data, size_t size);
+        Photo(string& name, const char* data, size_t size);
 
         string get_name();
-        const void* get_data();
+        const char* get_data();
         int get_size();
         int get_month();
         int get_year();
     protected:
         string name_;
-        const void* data_;
+        const char* data_;
         int size_;
     };
 }
