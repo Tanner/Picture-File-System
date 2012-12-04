@@ -77,7 +77,11 @@ int Entity::open(struct fuse_file_info* fi) {
     return -1;
 }
 
-int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+int Entity::read(char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
+    return -1;
+}
+
+int Entity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
     return -1;
 }
 

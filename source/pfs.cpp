@@ -16,6 +16,7 @@ namespace pfs {
     int utimens(const char* path, const struct timespec ts[2]);
     int open(const char* path, struct fuse_file_info* fi);
     int read(const char* path, char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
+    int write(const char* path, const char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     int mknod(const char* path, mode_t mode, dev_t rdev);
 }
 
@@ -31,6 +32,7 @@ int main(int argc, char** argv) {
     operations.access = pfs::access;
     operations.open = pfs::open;
     operations.read = pfs::read;
+    operations.write = pfs::write;
     operations.mknod = pfs::mknod;
 
     return fuse_main(argc, argv, &operations, NULL);
@@ -78,9 +80,14 @@ int pfs::open(const char* path, struct fuse_file_info* fi) {
     return entity->open(fi);
 }
 
-int pfs::read(const char* path, char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+int pfs::read(const char* path, char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
     shared_ptr<Entity> entity(RootEntity().route_path(path));
-    return entity->read(buf, size, offset, fi);
+    return entity->read(buf, size, off, fi);
+}
+
+int pfs::write(const char* path, const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
+    shared_ptr<Entity> entity(RootEntity().route_path(path));
+    return entity->write(buf, size, off, fi);
 }
 
 int pfs::mknod(const char* path, mode_t mode, dev_t rdev) {

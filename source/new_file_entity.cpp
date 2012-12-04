@@ -32,13 +32,34 @@ int NewFileEntity::getattr(struct stat* stbuf) {
     return 0;
 }
 
+int NewFileEntity::chmod(mode_t mode) {
+	return 0;
+}
+
+int NewFileEntity::chown(uid_t uid, gid_t gid) {
+	return 0;
+}
+
+int NewFileEntity::truncate(off_t size) {
+	return 0;
+}
+
+int NewFileEntity::utimens(const struct timespec ts[2]) {
+	return 0;
+}
+
 int NewFileEntity::access(int mask) {
 	return 0;
 }
 
 int NewFileEntity::open(struct fuse_file_info* fi) {
-	cout << "NewFileEntity open" << endl;
 	return 0;
+}
+
+int NewFileEntity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
+    content_.append(buf);
+
+    return size;
 }
 
 int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
