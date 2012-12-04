@@ -8,6 +8,7 @@ using namespace pfs;
 using namespace std;
 
 NewFileEntity::NewFileEntity(string name) : Entity(name) {
+	permissions_ = 666;
 	cout << "[NewFileEntity] " << name << endl;
 }
 
@@ -31,7 +32,12 @@ int NewFileEntity::getattr(struct stat* stbuf) {
     return 0;
 }
 
-int open(struct fuse_file_info* fi) {
+int NewFileEntity::access(int mask) {
+	return 0;
+}
+
+int NewFileEntity::open(struct fuse_file_info* fi) {
+	cout << "NewFileEntity open" << endl;
 	return 0;
 }
 

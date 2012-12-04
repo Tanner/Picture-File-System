@@ -24,6 +24,7 @@ namespace pfs {
         virtual vector<shared_ptr<Entity> > get_children();
 		virtual int getattr(struct stat* stbuf);
         virtual int readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi);
+        virtual int access(int mask);
 		virtual int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
 		virtual int open(struct fuse_file_info* fi);
         virtual int mknod(mode_t mode, dev_t rdev);

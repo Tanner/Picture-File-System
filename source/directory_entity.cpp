@@ -5,7 +5,7 @@ using namespace pfs;
 using namespace std;
 
 DirectoryEntity::DirectoryEntity(string name) : Entity(name) {
-    permissions_ = 0755;
+
 }
 
 int DirectoryEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {

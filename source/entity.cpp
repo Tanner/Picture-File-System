@@ -17,7 +17,7 @@ using namespace pfs;
 using namespace std;
 
 Entity::Entity(string name) : name_(name) {
-
+    permissions_ = 755;
 }
 
 shared_ptr<Entity> Entity::route_path(string full_path, string relative_path) {    
@@ -49,11 +49,15 @@ int Entity::getattr(struct stat* stbuf) {
     return -ENOENT;
 }
 
-int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+int Entity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
     return -ENOENT;
 }
 
-int Entity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
+int Entity::access(int mask) {
+    return -EACCES;
+}
+
+int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
     return -ENOENT;
 }
 

@@ -12,7 +12,8 @@ namespace pfs {
 		NewFileEntity(string name);
 		Entity* clone();
 		int getattr(struct stat* stbuf);
-		int open(const char* path, struct fuse_file_info* fi);
+		int access(int mask);
+		int open(struct fuse_file_info* fi);
 		int mknod(mode_t mode, dev_t rdev);
 	protected:
 		const char* content();
