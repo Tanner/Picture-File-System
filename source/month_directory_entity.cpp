@@ -20,8 +20,8 @@ vector<shared_ptr<Entity> > MonthDirectoryEntity::get_children() {
 	vector<shared_ptr<Entity> > children;
     vector<Photo> photos(Storage::get_photos(year_, month_));
 
-    for (Photo& p : photos) {
-    	children.push_back(shared_ptr<Entity>(new PictureEntity(p)));
+    for (auto i = photos.begin(); i != photos.end(); ++i) {
+    	children.push_back(shared_ptr<Entity>(new PictureEntity(*i)));
     }
 
     return children;
