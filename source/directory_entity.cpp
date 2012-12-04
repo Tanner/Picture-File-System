@@ -27,6 +27,10 @@ int DirectoryEntity::getattr(struct stat* stbuf) {
 	return 0;
 }
 
+int DirectoryEntity::access(int mask) {
+    return 0;
+}
+
 int DirectoryEntity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
 	return 0;	
 }

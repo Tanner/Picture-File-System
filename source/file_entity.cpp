@@ -16,6 +16,14 @@ int FileEntity::getattr(struct stat* stbuf) {
     return 0;
 }
 
+int FileEntity::access(int mask) {
+    return 0;
+}
+
+int FileEntity::open(struct fuse_file_info* fi) {
+    return 0;
+}
+
 int FileEntity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
     const char* data(content());
     size_t len(length());

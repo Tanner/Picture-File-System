@@ -46,30 +46,42 @@ vector<shared_ptr<Entity> > Entity::get_children() {
 }
 
 int Entity::getattr(struct stat* stbuf) {
-    return -ENOENT;
+    return -1;
 }
 
 int Entity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
-    return -ENOENT;
+    return -1;
+}
+
+int Entity::chmod(mode_t mode) {
+    return -1;
+}
+
+int Entity::chown(uid_t uid, gid_t gid) {
+    return -1;
+}
+
+int Entity::truncate(off_t size) {
+    return -1;
+}
+
+int Entity::utimens(const struct timespec ts[2]) {
+    return -1;
 }
 
 int Entity::access(int mask) {
-    return -EACCES;
-}
-
-int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
-    return -ENOENT;
+    return -1;
 }
 
 int Entity::open(struct fuse_file_info* fi) {
-    if ((fi->flags & 3) != O_RDONLY) {
-        return -EACCES;
-    }
+    return -1;
+}
 
-    return 0;
+int Entity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+    return -1;
 }
 
 int Entity::mknod(mode_t mode, dev_t rdev) {
-    return -ENOENT;
+    return -1;
 }
 
