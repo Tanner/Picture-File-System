@@ -7,7 +7,7 @@
 namespace pfs {
 	using namespace std;
 
-	class NewFileEntity : public Entity {
+	class NewFileEntity : public FileEntity {
 	public:
 		NewFileEntity(string name);
 		Entity* clone();
