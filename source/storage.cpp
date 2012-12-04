@@ -17,8 +17,8 @@ int Storage::add_picture(Photo photo) {
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
     insert_query << "'" << photo.get_name() << "', ";
-    insert_query << photo.get_size() << ", ";
-    insert_query << "'" << photo.get_data() << "', ";
+    insert_query << photo.size() << ", ";
+    insert_query << "'" << photo.data() << "', ";
     insert_query << photo.get_year() << ", ";
     insert_query << "'" << photo.get_month() << "') ";
 

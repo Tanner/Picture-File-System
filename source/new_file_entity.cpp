@@ -73,7 +73,7 @@ int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
 }
 
 int NewFileEntity::release(struct fuse_file_info* fi) {
-    Photo photo = Photo(name_, content_.c_str(), content_.length());
+    Photo photo = Photo(name_, content_.c_str());
 	Storage::add_picture(photo);
 
 	RootEntity::get()->remove_file(shared_ptr<Entity>(new NewFileEntity(*this)));
