@@ -9,8 +9,8 @@
 using namespace pfs;
 using namespace std;
 
-StorageDirectoryEntity::StorageDirectoryEntity(string name) : DirectoryEntity(name) {
-
+StorageDirectoryEntity::StorageDirectoryEntity(string name, string storage_path) : DirectoryEntity(name) {
+    storage_ = Storage(storage_path);
 }
 
 Entity* StorageDirectoryEntity::clone() {
