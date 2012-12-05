@@ -28,6 +28,7 @@ namespace pfs {
         string name_;
         string data_;
         int size_;
+        struct tm time_;
     };
 }
 
