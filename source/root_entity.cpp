@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "root_entity.h"
-#include "dates_directory_entity.h"
+#include "storage_directory_entity.h"
 #include "new_file_entity.h"
 #include "null_entity.h"
 #include "storage.h"
@@ -21,7 +21,7 @@ RootEntity* RootEntity::get() {
 }
 
 RootEntity::RootEntity() : DirectoryEntity("") {
-    children_.push_back(shared_ptr<Entity>(new DatesDirectoryEntity("Dates")));
+    children_.push_back(shared_ptr<Entity>(new StorageDirectoryEntity("Dates")));
 }
 
 Entity* RootEntity::clone() {

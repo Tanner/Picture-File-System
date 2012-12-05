@@ -9,7 +9,7 @@
 #include "file_entity.h"
 #include "picture_entity.h"
 #include "null_entity.h"
-#include "dates_directory_entity.h"
+#include "storage_directory_entity.h"
 #include "year_directory_entity.h"
 #include "month_directory_entity.h"
 

@@ -2,22 +2,22 @@
 #include <vector>
 #include <sstream>
 
-#include "dates_directory_entity.h"
+#include "storage_directory_entity.h"
 #include "year_directory_entity.h"
 #include "storage.h"
 
 using namespace pfs;
 using namespace std;
 
-DatesDirectoryEntity::DatesDirectoryEntity(string name) : DirectoryEntity(name) {
+StorageDirectoryEntity::StorageDirectoryEntity(string name) : DirectoryEntity(name) {
 
 }
 
-Entity* DatesDirectoryEntity::clone() {
-    return new DatesDirectoryEntity(*this);
+Entity* StorageDirectoryEntity::clone() {
+    return new StorageDirectoryEntity(*this);
 }
 
-vector<shared_ptr<Entity> > DatesDirectoryEntity::get_children() {
+vector<shared_ptr<Entity> > StorageDirectoryEntity::get_children() {
     vector<shared_ptr<Entity >> children;
     vector<int> years(Storage::get_years());
     for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
