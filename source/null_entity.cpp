@@ -20,10 +20,50 @@ int NullEntity::getattr(struct stat* stbuf) {
     return -ENOENT;
 }
 
-int NullEntity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
+int NullEntity::readdir(void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
+    return -ENOENT;
+}
+
+int NullEntity::chmod(mode_t mode) {
+    return -ENOENT;
+}
+
+int NullEntity::chown(uid_t uid, gid_t gid) {
+    return -ENOENT;
+}
+
+int NullEntity::truncate(off_t size) {
+    return -ENOENT;
+}
+
+int NullEntity::utimens(const struct timespec ts[2]) {
+    return -ENOENT;
+}
+
+int NullEntity::access(int mask) {
     return -ENOENT;
 }
 
 int NullEntity::open(struct fuse_file_info* fi) {
+    return -ENOENT;
+}
+
+int NullEntity::read(char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
+    return -ENOENT;
+}
+
+int NullEntity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
+    return -ENOENT;
+}
+
+int NullEntity::mknod(mode_t mode, dev_t rdev) {
+    return -ENOENT;
+}
+
+int NullEntity::release(struct fuse_file_info* fi) {
+    return -ENOENT;
+}
+
+int NullEntity::rename(string new_name) {
     return -ENOENT;
 }

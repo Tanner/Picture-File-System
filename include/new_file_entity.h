@@ -26,6 +26,14 @@ namespace pfs {
 		size_t length();
 	private:
 		string content_;
+		bool open_;
+		int is_open() {
+			if (open_) {
+				return 0;
+			}
+
+			return -ENOENT;
+		}
 	};
 }
 
