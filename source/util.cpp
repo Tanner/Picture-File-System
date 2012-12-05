@@ -28,6 +28,30 @@ string pfs::root_for_path(string path) {
     }
 }
 
+string pfs::filename_for_path(string path) {
+    if (path.length() == 0) {
+        return "";
+    }
+
+    if (path.length() == 1 && path[0] == '/') {
+        return "";
+    }
+
+    auto last_forward_slash = string::npos;
+    for (int i = path.length() - 1; i >= 0; --i) {
+        if (path[i] == '/') {
+            last_forward_slash = i;
+            break;
+        }
+    }
+
+    if (last_forward_slash == string::npos) {
+        return path;
+    }
+
+    return path.substr(last_forward_slash + 1);
+}
+
 string pfs::deeper_path(string path) {
     string root = pfs::root_for_path(path);
 

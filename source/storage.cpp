@@ -24,8 +24,38 @@ int Storage::add_picture(Photo photo) {
 
     cout << insert_query.str() << endl;
 
+    char *error;
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         cout << "Could not insert photo in database" << endl;
+        cout << "sqlite3 error: " << error << endl;
+        sqlite3_free(error);
+
+        sqlite3_close(db);
+
+        return -1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int Storage::rename_picture(Photo photo, string new_name) {
+    sqlite3 *db = open();
+
+    // Insert the new data
+    stringstream query;
+    query << "UPDATE photos ";
+    query << "SET name='" << new_name << "' ";
+    query << "WHERE name='" << photo.get_name() << "'";
+
+    cout << query.str() << endl;
+
+    char *error;
+    if (sqlite3_exec(db, query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
+        cout << "Could not rename photo in database to " << new_name << endl;
+        cout << "sqlite3 error: " << error << endl;
+        sqlite3_free(error);
 
         sqlite3_close(db);
 

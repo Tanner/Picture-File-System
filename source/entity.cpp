@@ -92,3 +92,7 @@ int Entity::mknod(mode_t mode, dev_t rdev) {
 int Entity::release(struct fuse_file_info* fi) {
     return -1;
 }
+
+int Entity::rename(string new_name) {
+    return -1;
+}

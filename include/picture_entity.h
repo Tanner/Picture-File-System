@@ -12,6 +12,7 @@ namespace pfs {
     public:
         PictureEntity(Photo& p);
         Entity* clone();
+        int rename(string new_name);
     protected:
         size_t length();
         const char* content();
