@@ -16,6 +16,24 @@ Photo::Photo(int id, string& name, int size) : id_(id), name_(name), size_(size)
 Photo::Photo(string& name, string& data) : name_(name), data_(data) {
     id_ = -1;
     size_ = data.length();
+    
+    // Get time/date from EXIF data
+    ExifData *exif_data = exif_data_new_from_data((const unsigned char*) data.c_str(), size());
+    exif_data_fix(exif_data);
+    exif_data_dump(exif_data);
+
+    ExifEntry *entry = exif_content_get_entry(exif_data->ifd[EXIF_IFD_EXIF], EXIF_TAG_DATE_TIME_ORIGINAL);
+
+    if (entry) {
+        // EXIF tag exists
+        char buf[1024];
+
+        exif_entry_get_value(entry, buf, sizeof(buf));
+
+        strptime(buf, "%Y:%m:%d %H:%M:%S", &time_);
+    } else {
+        // EXIF tag does not exist, use something else
+    }
 }
 
 int Photo::get_id() {
