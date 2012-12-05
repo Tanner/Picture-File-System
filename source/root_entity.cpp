@@ -21,7 +21,7 @@ RootEntity* RootEntity::get() {
 }
 
 RootEntity::RootEntity() : DirectoryEntity("") {
-    children_.push_back(shared_ptr<Entity>(new StorageDirectoryEntity("Dates")));
+    children_.push_back(shared_ptr<Entity>(new PrivateStorageDirectoryEntity()));
 }
 
 Entity* RootEntity::clone() {
