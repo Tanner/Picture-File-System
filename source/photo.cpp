@@ -21,7 +21,6 @@ Photo::Photo(string& name, string& data) : name_(name), data_(data) {
     // Get time/date from EXIF data
     ExifData *exif_data = exif_data_new_from_data((const unsigned char*) data.c_str(), size());
     exif_data_fix(exif_data);
-    exif_data_dump(exif_data);
 
     ExifEntry *entry = exif_content_get_entry(exif_data->ifd[EXIF_IFD_EXIF], EXIF_TAG_DATE_TIME_ORIGINAL);
 
