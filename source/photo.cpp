@@ -38,6 +38,11 @@ int Photo::size() {
     return size_;
 }
 
+void Photo::set_data(string& data) {
+    data_ = data;
+    Storage::set_data_for_photo(id_, data_);
+}
+
 int Photo::get_month() {
     return 12;
 }

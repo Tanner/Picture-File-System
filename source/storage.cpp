@@ -11,7 +11,7 @@
 using namespace pfs;
 using namespace std;
 
-int Storage::add_picture(Photo photo) {
+int Storage::add_picture(Photo& photo) {
     sqlite3 *db = open();
 
     string encoded_data(base64_encode((unsigned char*)photo.data().c_str(), photo.size()));
@@ -41,20 +41,49 @@ int Storage::add_picture(Photo photo) {
     return 0;
 }
 
-int Storage::rename_picture(Photo photo, string new_name) {
+int Storage::rename_picture(Photo& photo, string new_name) {
     sqlite3 *db = open();
 
-    // Insert the new data
     stringstream query;
     query << "UPDATE photos ";
     query << "SET name='" << new_name << "' ";
-    query << "WHERE name='" << photo.get_name() << "'";
+    query << "WHERE id='" << photo.get_id() << "'";
 
     cout << query.str() << endl;
 
     char *error;
     if (sqlite3_exec(db, query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
         cout << "Could not rename photo in database to " << new_name << endl;
+        cout << "sqlite3 error: " << error << endl;
+        sqlite3_free(error);
+
+        sqlite3_close(db);
+
+        return -1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int Storage::set_data_for_photo(int id, string& data) {
+    sqlite3 *db = open();
+
+    string encoded_data(base64_encode((unsigned char*)data.c_str(), data.size()));
+
+    // Insert the new data
+    stringstream query;
+    query << "UPDATE photos ";
+    query << "SET contents='" << encoded_data << "', ";
+    query << "size='" << data.length() << "' ";
+    query << "WHERE id='" << id << "'";
+
+    cout << query.str() << endl;
+
+    char *error;
+    if (sqlite3_exec(db, query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
+        cout << "Could not set photo data in database" << endl;
         cout << "sqlite3 error: " << error << endl;
         sqlite3_free(error);
 
