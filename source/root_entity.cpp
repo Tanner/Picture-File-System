@@ -44,7 +44,7 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
         }
     }
 
-	if (pfs::path_depth(path) == 0) {
+	if (path_depth(path) == 0 && is_image_path(path)) {
 		return shared_ptr<Entity>(new NewFileEntity(pfs::root_for_path(path)));
 	}
 

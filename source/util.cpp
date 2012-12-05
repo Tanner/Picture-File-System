@@ -8,6 +8,8 @@
 using namespace pfs;
 using namespace std;
 
+static vector<string> image_extensions({"png", "jpg", "jpeg", "gif"});
+
 string pfs::root_for_path(string path) {
     if (path.length() == 1 && path[0] == '/') {
         return "";
@@ -52,6 +54,30 @@ string pfs::filename_for_path(string path) {
     return path.substr(last_forward_slash + 1);
 }
 
+string pfs::extension_for_path(string path) {
+    if (path.length() == 0) {
+        return "";
+    }
+
+    if (path.length() == 1 && path[0] == '/') {
+        return "";
+    }
+
+    auto last_dot = string::npos;
+    for (int i = path.length() - 1; i >= 0; --i) {
+        if (path[i] == '.') {
+            last_dot = i;
+            break;
+        }
+    }
+
+    if (last_dot == string::npos) {
+        return path;
+    }
+
+    return path.substr(last_dot + 1);
+}
+
 string pfs::deeper_path(string path) {
     string root = pfs::root_for_path(path);
 
@@ -84,4 +110,16 @@ string pfs::month_to_str(int month) {
     strftime(buffer, 20, "%B", &time);
 
     return string(buffer);
+}
+
+bool pfs::is_image_path(string path) {
+    string extension = extension_for_path(path);
+    
+    for (auto i = image_extensions.begin(); i != image_extensions.end(); ++i) {
+        if (*i == extension) {
+            return true;
+        }
+    }
+
+    return false;
 }
