@@ -11,7 +11,7 @@ namespace pfs {
     public:
         virtual ~Photo() { }
 
-        Photo(int id, string& name, int size);
+        Photo(int id, string& name, int size, time_t time);
         Photo(string& name, string& data);
 
         string data();
@@ -23,6 +23,7 @@ namespace pfs {
         string get_name();
         int get_month();
         int get_year();
+        struct tm get_time();
     protected:
         int id_;
         string name_;
@@ -33,4 +34,5 @@ namespace pfs {
 }
 
 #endif
+
 

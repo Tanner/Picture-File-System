@@ -9,8 +9,9 @@
 using namespace pfs;
 using namespace std;
 
-Photo::Photo(int id, string& name, int size) : id_(id), name_(name), size_(size) {
-
+Photo::Photo(int id, string& name, int size, time_t time) : id_(id), name_(name), size_(size) {
+    struct tm* temp_time = gmtime(&time);
+    time_ = *temp_time;;
 }
 
 Photo::Photo(string& name, string& data) : name_(name), data_(data) {
@@ -67,5 +68,9 @@ int Photo::get_month() {
 
 int Photo::get_year() {
     return time_.tm_year + 1900;
+}
+
+struct tm Photo::get_time() {
+    return time_;
 }
 

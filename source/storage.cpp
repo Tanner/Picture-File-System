@@ -15,6 +15,7 @@ int Storage::add_picture(Photo& photo) {
     sqlite3 *db = open();
 
     string encoded_data(base64_encode((unsigned char*)photo.data().c_str(), photo.size()));
+    struct tm time = photo.get_time();
 
     // Insert the new data
     stringstream insert_query;
@@ -22,6 +23,7 @@ int Storage::add_picture(Photo& photo) {
     insert_query << "'" << photo.get_name() << "', ";
     insert_query << photo.data().length() << ", ";
     insert_query << "'" << encoded_data << "', ";
+    insert_query << mktime(&time) << ", ";
     insert_query << photo.get_year() << ", ";
     insert_query << "'" << photo.get_month() << "') ";
     
@@ -199,7 +201,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
 
     // Run the query
     stringstream select_query;
-    select_query << "SELECT rowid, name, size from photos WHERE (year=" << year << " AND month=" << month << ")";
+    select_query << "SELECT rowid, name, size, time from photos WHERE (year=" << year << " AND month=" << month << ")";
 
     cout << select_query.str() << endl;
 
@@ -222,8 +224,9 @@ vector<Photo> Storage::get_photos(int year, int month) {
             int id = sqlite3_column_int(statement, 0);
             string name = (const char*) sqlite3_column_text(statement, 1);
             int size = sqlite3_column_int(statement, 2);
+            time_t time = sqlite3_column_int(statement, 3);
 
-            photos.push_back(Photo(id, name, size));
+            photos.push_back(Photo(id, name, size, time));
         }
     } while (result != SQLITE_DONE);
 
@@ -283,7 +286,7 @@ sqlite3* Storage::open() {
     }
     
     // Init with default tables if they do not exist.
-    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
+    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, time INTEGER NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
     sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     return db;
