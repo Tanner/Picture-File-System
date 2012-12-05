@@ -295,8 +295,3 @@ sqlite3* Storage::open() {
     return db;
 }
 
-string Storage::get_database_path() {
-    string home_dir = getenv("HOME");
-    string path = "/.pfs";
-    return home_dir + path;
-}
