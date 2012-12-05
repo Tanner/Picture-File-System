@@ -11,17 +11,21 @@ namespace pfs {
     public:
         virtual ~Photo() { }
 
-        Photo(string& name, string data);
+        Photo(int id, string& name, int size);
+        Photo(string& name, string& data);
 
         string data();
         int size();
         
+        int get_id();
         string get_name();
         int get_month();
         int get_year();
     protected:
+        int id_;
         string name_;
         string data_;
+        int size_;
     };
 }
 

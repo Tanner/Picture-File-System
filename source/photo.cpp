@@ -4,24 +4,23 @@
 #include <iostream>
 
 #include "photo.h"
+#include "storage.h"
 
 using namespace pfs;
 using namespace std;
 
-Photo::Photo(string& name, string data) : name_(name), data_(data) {
-    // Try to get the EXIF data
-    ExifData *exif_data = exif_data_new_from_data((const unsigned char*) data.c_str(), size());
-    ExifEntry *entry = exif_content_get_entry(exif_data->ifd[EXIF_IFD_0], EXIF_TAG_DATE_TIME);
+Photo::Photo(int id, string& name, int size) : id_(id), name_(name), size_(size) {
+    data_ = "";
+    size_ = 0;
+}
 
-    if (entry) {
-        char buf[1024];
+Photo::Photo(string& name, string& data) : name_(name), data_(data) {
+    id_ = -1;
+    size_ = data.length();
+}
 
-        exif_entry_get_value(entry, buf, sizeof(buf));
-        
-        cout << "EXIF data found for" << name << endl;
-    } else {
-        cout << "EXIF data not found for " << name << endl;
-    }
+int Photo::get_id() {
+    return id_;
 }
 
 string Photo::get_name() {
@@ -29,11 +28,16 @@ string Photo::get_name() {
 }
 
 string Photo::data() {
+    if (data_.length() == 0) {
+        data_ = Storage::get_data_for_photo(id_);
+        size_ = data_.length();
+    }
+
     return data_;
 }
 
 int Photo::size() {
-    return data_.length();
+    return size_;
 }
 
 int Photo::get_month() {

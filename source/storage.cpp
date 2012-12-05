@@ -172,7 +172,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
 
     // Run the query
     stringstream select_query;
-    select_query << "SELECT * from photos WHERE (year=" << year << " AND month=" << month << ")";
+    select_query << "SELECT rowid,* from photos WHERE (year=" << year << " AND month=" << month << ")";
 
     cout << select_query.str() << endl;
 
@@ -192,24 +192,57 @@ vector<Photo> Storage::get_photos(int year, int month) {
         result = sqlite3_step(statement);
         
         if (result == SQLITE_ROW) {
-            string name = (const char*) sqlite3_column_text(statement, 0);
-            const void* blob = sqlite3_column_blob(statement, 2);
-            int size = sqlite3_column_bytes(statement, 2);
+            int id = sqlite3_column_int(statement, 0);
+            string name = (const char*) sqlite3_column_text(statement, 1);
+            int size = sqlite3_column_int(statement, 2);
 
-            // char* blob_copy = (char*)malloc(size);
-            // memcpy(blob_copy, blob, size);
-            string data((const char*) blob, size);
-            // free(blob_copy);
-
-            // cout << "SIZE! " << size << endl;
-
-            photos.push_back(Photo(name, base64_decode(data)));
+            photos.push_back(Photo(id, name, size));
         }
     } while (result != SQLITE_DONE);
 
     sqlite3_close(db);
 
     return photos;
+}
+
+string Storage::get_data_for_photo(int id) {
+    sqlite3 *db = open();
+    sqlite3_stmt *statement;
+
+    string data = "";
+
+    // Run the query
+    stringstream select_query;
+    select_query << "SELECT data from photos WHERE (rowid=" << id << ")";
+
+    cout << select_query.str() << endl;
+
+    if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+        stringstream message;
+        message << "Could not select photo with id " << id << " from database";
+
+        cout << message.str() << endl;
+        
+        return data;
+    }
+
+    // Get the data for the query
+    int result = -1;
+
+    do {
+        result = sqlite3_step(statement);
+        
+        if (result == SQLITE_ROW) {
+            const void* blob = sqlite3_column_blob(statement, 0);
+            int size = sqlite3_column_bytes(statement, 0);
+
+            data = string((const char*) blob, size);
+        }
+    } while (result != SQLITE_DONE);
+
+    sqlite3_close(db);
+
+    return data;
 }
 
 sqlite3* Storage::open() {
