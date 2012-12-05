@@ -10,10 +10,10 @@
 using namespace pfs;
 using namespace std;
 
-RootEntity* RootEntity::singleton = nullptr;
+RootEntity* RootEntity::singleton = NULL;
 
 RootEntity* RootEntity::get() {
-    if (RootEntity::singleton == nullptr) {
+    if (RootEntity::singleton == NULL) {
         cout << "ROOT IS NULL - MAKE SINGLETON" << endl;
         RootEntity::singleton = new RootEntity();
     }
