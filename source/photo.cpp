@@ -66,6 +66,6 @@ int Photo::get_month() {
 }
 
 int Photo::get_year() {
-    return time_.tm_year;
+    return time_.tm_year + 1900;
 }
 
