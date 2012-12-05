@@ -10,8 +10,7 @@ using namespace pfs;
 using namespace std;
 
 Photo::Photo(int id, string& name, int size) : id_(id), name_(name), size_(size) {
-    data_ = "";
-    size_ = 0;
+
 }
 
 Photo::Photo(string& name, string& data) : name_(name), data_(data) {
@@ -30,7 +29,6 @@ string Photo::get_name() {
 string Photo::data() {
     if (data_.length() == 0) {
         data_ = Storage::get_data_for_photo(id_);
-        size_ = data_.length();
     }
 
     return data_;

@@ -20,13 +20,11 @@ int Storage::add_picture(Photo photo) {
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
     insert_query << "'" << photo.get_name() << "', ";
-    insert_query << encoded_data.length() << ", ";
+    insert_query << photo.data().length() << ", ";
     insert_query << "'" << encoded_data << "', ";
     insert_query << photo.get_year() << ", ";
     insert_query << "'" << photo.get_month() << "') ";
     
-    cout << "ENCODED DATA SIZE " << encoded_data.length() << endl;
-
     char *error;
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
         cout << "Could not insert photo in database" << endl;
@@ -172,7 +170,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
 
     // Run the query
     stringstream select_query;
-    select_query << "SELECT rowid,* from photos WHERE (year=" << year << " AND month=" << month << ")";
+    select_query << "SELECT rowid, name, size from photos WHERE (year=" << year << " AND month=" << month << ")";
 
     cout << select_query.str() << endl;
 
@@ -213,15 +211,17 @@ string Storage::get_data_for_photo(int id) {
 
     // Run the query
     stringstream select_query;
-    select_query << "SELECT data from photos WHERE (rowid=" << id << ")";
+    select_query << "SELECT contents from photos WHERE (rowid=" << id << ")";
 
     cout << select_query.str() << endl;
+
+    cout << endl << endl;
 
     if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not select photo with id " << id << " from database";
 
-        cout << message.str() << endl;
+        cout << endl << endl << message.str() << endl << endl;
         
         return data;
     }
@@ -242,7 +242,7 @@ string Storage::get_data_for_photo(int id) {
 
     sqlite3_close(db);
 
-    return data;
+    return base64_decode(data);
 }
 
 sqlite3* Storage::open() {
