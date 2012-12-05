@@ -25,7 +25,7 @@ int Storage::add_picture(Photo photo) {
     cout << insert_query.str() << endl;
 
     char *error;
-    if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
         cout << "Could not insert photo in database" << endl;
         cout << "sqlite3 error: " << error << endl;
         sqlite3_free(error);
