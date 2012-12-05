@@ -11,6 +11,9 @@
 using namespace pfs;
 using namespace std;
 
+Storage::Storage(string path) : path_(path) {
+}
+
 int Storage::add_picture(Photo& photo) {
     sqlite3 *db = open();
 
@@ -280,8 +283,8 @@ string Storage::get_data_for_photo(int id) {
 sqlite3* Storage::open() {
     sqlite3 *db;
 
-    if(sqlite3_open(get_database_path().c_str(), &db) != SQLITE_OK) {
-        cout << "Could not open database at " << get_database_path() << endl;
+    if(sqlite3_open(path_.c_str(), &db) != SQLITE_OK) {
+        cout << "Could not open database at " << path_ << endl;
         return NULL;
     }
     

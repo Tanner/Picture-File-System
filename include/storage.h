@@ -13,16 +13,23 @@ namespace pfs {
 
     class Storage {
     public:
-        static int add_picture(Photo& photo);
-        static int rename_picture(Photo& photo, string new_name);
-        static int set_data_for_photo(int id, string& data);
-        static vector<int> get_years();
-        static vector<int> get_months(int year);
-        static vector<Photo> get_photos(int year, int month);
-        static string get_data_for_photo(int id);
+        virtual ~Storage() { }
+        int add_picture(Photo& photo);
+        int rename_picture(Photo& photo, string new_name);
+        int set_data_for_photo(int id, string& data);
+        vector<int> get_years();
+        vector<int> get_months(int year);
+        vector<Photo> get_photos(int year, int month);
+        string get_data_for_photo(int id);
+        string get_path() {
+            return path_;
+        }
     private:
-        static sqlite3* open();
-        static string get_database_path();
+        Storage(string path);
+        sqlite3* open();
+        string get_database_path();
+
+        string path_;
     };
 }
 
