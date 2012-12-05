@@ -62,10 +62,10 @@ void Photo::set_data(string& data) {
 }
 
 int Photo::get_month() {
-    return 12;
+    return time_.tm_mon;
 }
 
 int Photo::get_year() {
-    return 1261;
+    return time_.tm_year;
 }
 
