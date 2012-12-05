@@ -13,7 +13,7 @@ namespace pfs {
 
         Photo(string& name, string data);
 
-        const char* data();
+        string data();
         int size();
         
         string get_name();

@@ -17,8 +17,8 @@ Entity* NewFileEntity::clone() {
 	return new NewFileEntity(*this);
 }
 
-const char* NewFileEntity::content() {
-	return content_.c_str();
+string NewFileEntity::content() {
+	return content_;
 }
 
 size_t NewFileEntity::length() {
@@ -62,9 +62,6 @@ int NewFileEntity::open(struct fuse_file_info* fi) {
 int NewFileEntity::write(const char* buf, size_t size, off_t off, struct fuse_file_info* fi) {
     content_.append(buf, size);
 
-	cout << "NEWFILE write" << this << endl;
-    cout << content_ << endl;
-
     return size;
 }
 
@@ -73,7 +70,7 @@ int NewFileEntity::mknod(mode_t mode, dev_t rdev) {
 }
 
 int NewFileEntity::release(struct fuse_file_info* fi) {
-    Photo photo = Photo(name_, content_.c_str());
+    Photo photo = Photo(name_, content_);
 	Storage::add_picture(photo);
 
 	RootEntity::get()->remove_file(shared_ptr<Entity>(new NewFileEntity(*this)));

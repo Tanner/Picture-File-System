@@ -28,8 +28,8 @@ string Photo::get_name() {
     return name_;
 }
 
-const char* Photo::data() {
-    return data_.c_str();
+string Photo::data() {
+    return data_;
 }
 
 int Photo::size() {

@@ -25,7 +25,7 @@ int FileEntity::open(struct fuse_file_info* fi) {
 }
 
 int FileEntity::read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi) {
-    const char* data(content());
+    string data(content());
     size_t len(length());
 
     if (offset < (long)len) {
@@ -33,7 +33,7 @@ int FileEntity::read(char* buf, size_t size, off_t offset, struct fuse_file_info
             size = len - offset; 
         }
 
-        memcpy(buf, data + offset, size);
+        memcpy(buf, data.c_str() + offset, size);
     } else {
         size = 0;
     }

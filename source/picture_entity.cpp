@@ -23,6 +23,6 @@ size_t PictureEntity::length() {
     return photo_.size();
 }
 
-const char* PictureEntity::content() {
+string PictureEntity::content() {
     return photo_.data();
 }

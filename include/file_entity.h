@@ -15,7 +15,7 @@ namespace pfs {
         int open(struct fuse_file_info* fi);
         int read(char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     protected:
-        virtual const char* content() = 0;
+        virtual string content() = 0;
         virtual size_t length() = 0;
     };
 }

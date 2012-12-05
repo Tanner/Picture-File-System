@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "storage.h"
+#include "base64.h"
 
 using namespace pfs;
 using namespace std;
@@ -13,16 +14,18 @@ using namespace std;
 int Storage::add_picture(Photo photo) {
     sqlite3 *db = open();
 
+    string encoded_data(base64_encode((unsigned char*)photo.data().c_str(), photo.size()));
+
     // Insert the new data
     stringstream insert_query;
     insert_query << "INSERT INTO photos VALUES(";
     insert_query << "'" << photo.get_name() << "', ";
-    insert_query << photo.size() << ", ";
-    insert_query << "'" << photo.data() << "', ";
+    insert_query << encoded_data.length() << ", ";
+    insert_query << "'" << encoded_data << "', ";
     insert_query << photo.get_year() << ", ";
     insert_query << "'" << photo.get_month() << "') ";
-
-    cout << insert_query.str() << endl;
+    
+    cout << "ENCODED DATA SIZE " << encoded_data.length() << endl;
 
     char *error;
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
@@ -190,15 +193,17 @@ vector<Photo> Storage::get_photos(int year, int month) {
         
         if (result == SQLITE_ROW) {
             string name = (const char*) sqlite3_column_text(statement, 0);
-            int size = sqlite3_column_int(statement, 1);
             const void* blob = sqlite3_column_blob(statement, 2);
+            int size = sqlite3_column_bytes(statement, 2);
 
-            char* blob_copy = (char*)malloc(size);
-            memcpy(blob_copy, blob, size);
-            string data(blob_copy, size);
-            free(blob_copy);
+            // char* blob_copy = (char*)malloc(size);
+            // memcpy(blob_copy, blob, size);
+            string data((const char*) blob, size);
+            // free(blob_copy);
 
-            photos.push_back(Photo(name, data));
+            // cout << "SIZE! " << size << endl;
+
+            photos.push_back(Photo(name, base64_decode(data)));
         }
     } while (result != SQLITE_DONE);
 

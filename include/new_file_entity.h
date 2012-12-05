@@ -22,7 +22,7 @@ namespace pfs {
 		int mknod(mode_t mode, dev_t rdev);
 		int release(struct fuse_file_info* fi);
 	protected:
-		const char* content();
+		string content();
 		size_t length();
 	private:
 		string content_;

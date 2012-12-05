@@ -15,7 +15,7 @@ namespace pfs {
         int rename(string new_name);
     protected:
         size_t length();
-        const char* content();
+        string content();
     private:
     	Photo photo_;
     };
