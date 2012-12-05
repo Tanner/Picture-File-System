@@ -14,7 +14,6 @@ RootEntity* RootEntity::singleton = NULL;
 
 RootEntity* RootEntity::get() {
     if (RootEntity::singleton == NULL) {
-        cout << "ROOT IS NULL - MAKE SINGLETON" << endl;
         RootEntity::singleton = new RootEntity();
     }
 
@@ -30,17 +29,11 @@ Entity* RootEntity::clone() {
 }
 
 shared_ptr<Entity> RootEntity::route_path(string path) {
-	cout << "ROOT - PATH = " << path << endl;
-	cout << "ROOT - NAME FOR PATH = " << pfs::root_for_path(path) << endl;
-
 	if (pfs::root_for_path(path) == name_) {
-		cout << "ROOT WILL HANDLE" << endl;
-
         return shared_ptr<Entity>(clone());
     }
 
     vector<shared_ptr<Entity> > children(get_children());
-    cout << "ROOT HAS " << children.size() << " CHILDREN" << endl;
     for (auto i = children.begin(); i != children.end(); ++i) {
         if (i->get()->get_name() == root_for_path(path)) {
             if (i->get()->get_name() == path.erase(0, 1)) {
