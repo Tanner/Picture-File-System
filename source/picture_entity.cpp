@@ -21,6 +21,23 @@ string PictureEntity::content() {
     return photo_.data();
 }
 
+int PictureEntity::getattr(struct stat* stbuf) {
+    int result;
+    
+    if ((result = FileEntity::getattr(stbuf)) < 0) {
+        return result;
+    }
+
+    struct tm time = photo_.get_time();
+    time_t epoch_time = mktime(&time);
+
+    stbuf->st_atime = epoch_time;
+    stbuf->st_mtime = epoch_time;
+    stbuf->st_ctime = epoch_time;
+
+    return 0;
+}
+
 int PictureEntity::rename(string new_name) {
 	Storage::rename_picture(photo_, new_name);
 

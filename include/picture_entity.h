@@ -12,6 +12,7 @@ namespace pfs {
     public:
         PictureEntity(Photo& p);
         Entity* clone();
+        int getattr(struct stat* stbuf);
         int rename(string new_name);
         int write(const char* buf, size_t size, off_t offset, struct fuse_file_info* fi);
     protected:
