@@ -123,3 +123,7 @@ bool pfs::is_image_path(string path) {
 
     return false;
 }
+
+bool pfs::is_file_private(string filename) {
+    return filename.find("+private") != string::npos;
+}

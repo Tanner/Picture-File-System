@@ -53,7 +53,7 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
         shared_ptr<Entity> entity(new NewFileEntity(root_for_path(path)));
 
         // Determine which directory to send a file to
-        if (filename_for_path(path).find("+private") != string::npos) {
+        if (is_file_private(filename_for_path(path))) {
             entity->set_storage(private_storage_dir_->get_storage());
         } else {
             entity->set_storage(public_storage_dir_->get_storage());

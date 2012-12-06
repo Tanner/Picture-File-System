@@ -15,6 +15,7 @@ namespace pfs {
     string int_to_str(int i);
     string month_to_str(int month);
     bool is_image_path(string path);
+    bool is_file_private(string filename);
 }
 
 #endif
