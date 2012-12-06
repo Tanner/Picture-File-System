@@ -10,11 +10,10 @@ namespace pfs {
 
 	class PrivateStorageDirectoryEntity : public StorageDirectoryEntity {
 	public:
-		PrivateStorageDirectoryEntity();
+		PrivateStorageDirectoryEntity(string name);
 		Entity* clone();
     private:
         static string get_private_path();
-        static string get_private_name();
 	};
 }
 
