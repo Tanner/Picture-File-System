@@ -13,6 +13,11 @@ namespace pfs {
     protected:
         sqlite3* open();
         int close(sqlite3*);
+    private:
+        string key_phrase_;
+        void encrypt(string key_phrase);
+        void decrypt(string key_phrase);
+        void encrypt_decrypt(string key_phrase, int enc);
     };
 }
 
