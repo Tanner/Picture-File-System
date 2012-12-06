@@ -10,8 +10,9 @@ namespace pfs {
     class EncryptedStorage : public Storage {
     public:
         EncryptedStorage(string path);
-    private:
+    protected:
         sqlite3* open();
+        int close(sqlite3*);
     };
 }
 
