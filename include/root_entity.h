@@ -22,6 +22,7 @@ namespace pfs {
         static RootEntity* singleton;
 
         shared_ptr<StorageDirectoryEntity> private_storage_dir_;
+        shared_ptr<StorageDirectoryEntity> public_storage_dir_;
 	};
 }
 

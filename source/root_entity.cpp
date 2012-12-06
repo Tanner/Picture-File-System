@@ -23,7 +23,10 @@ RootEntity* RootEntity::get() {
 
 RootEntity::RootEntity() : DirectoryEntity("") {
     private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new PrivateStorageDirectoryEntity());
+    public_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new StorageDirectoryEntity("Public", "/tmp/.pfs"));
+    
     children_.push_back(private_storage_dir_);
+    children_.push_back(public_storage_dir_);
 }
 
 Entity* RootEntity::clone() {
