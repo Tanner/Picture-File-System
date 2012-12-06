@@ -23,6 +23,7 @@ namespace pfs {
         int size();
 
         void set_data(string& data);
+        void set_name(string& name);
         
         int get_id();
         string get_name();

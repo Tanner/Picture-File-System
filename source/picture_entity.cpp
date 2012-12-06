@@ -45,6 +45,8 @@ int PictureEntity::rename(string new_name) {
         storage_->delete_photo(photo_.get_id());
 
         storage_ = RootEntity::get()->get_public_storage();
+        photo_.set_name(new_name);
+
         storage_->add_picture(photo_);
 
         return 0;
@@ -53,6 +55,8 @@ int PictureEntity::rename(string new_name) {
         storage_->delete_photo(photo_.get_id());
 
         storage_ = RootEntity::get()->get_private_storage();
+        photo_.set_name(new_name);
+
         storage_->add_picture(photo_);
 
         return 0;

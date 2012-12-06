@@ -61,6 +61,10 @@ void Photo::set_data(string& data) {
     storage_->set_data_for_photo(id_, data_);
 }
 
+void Photo::set_name(string &name) {
+    name_ = name;
+}
+
 int Photo::get_month() {
     return time_.tm_mon;
 }
