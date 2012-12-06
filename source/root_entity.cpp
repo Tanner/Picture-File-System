@@ -3,7 +3,7 @@
 
 #include "root_entity.h"
 #include "storage_directory_entity.h"
-#include "private_storage_directory_entity.h"
+#include "encrypted_storage_directory_entity.h"
 #include "new_file_entity.h"
 #include "null_entity.h"
 #include "storage.h"
@@ -22,10 +22,12 @@ RootEntity* RootEntity::get() {
 }
 
 RootEntity::RootEntity() : DirectoryEntity("") {
-    private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new PrivateStorageDirectoryEntity("My Private Photos"));
-    public_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new StorageDirectoryEntity("Shared Photos", "/tmp/.pfs"));
-    
+    string home(getenv("HOME"));
+    string private_storage_dir_location(home+ "/.pfs");
+    private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new EncryptedStorageDirectoryEntity("My Private Photos", private_storage_dir_location));
     children_.push_back(private_storage_dir_);
+
+    public_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new StorageDirectoryEntity("Shared Photos", "/tmp/.pfs"));
     children_.push_back(public_storage_dir_);
 }
 
