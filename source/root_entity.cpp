@@ -3,6 +3,7 @@
 
 #include "root_entity.h"
 #include "storage_directory_entity.h"
+#include "private_storage_directory_entity.h"
 #include "new_file_entity.h"
 #include "null_entity.h"
 #include "storage.h"
@@ -29,7 +30,7 @@ Entity* RootEntity::clone() {
 }
 
 shared_ptr<Entity> RootEntity::route_path(string path) {
-	if (pfs::root_for_path(path) == name_) {
+	if (root_for_path(path) == name_) {
         return shared_ptr<Entity>(clone());
     }
 
@@ -40,12 +41,12 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
                 return *i;
             }
 
-            return i->get()->route_path(path, pfs::deeper_path(path)); 
+            return i->get()->route_path(path, deeper_path(path)); 
         }
     }
 
 	if (path_depth(path) == 0 && is_image_path(path)) {
-		return shared_ptr<Entity>(new NewFileEntity(pfs::root_for_path(path)));
+		return shared_ptr<Entity>(new NewFileEntity(root_for_path(path)));
 	}
 
     return shared_ptr<Entity>(new NullEntity(path));

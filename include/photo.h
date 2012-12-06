@@ -3,16 +3,21 @@
 #define PHOTO_H_
 
 #include <string>
+#include <memory>
+
+#include "storage.h"
 
 namespace pfs {
     using namespace std;
+
+    class Storage;
 
     class Photo {
     public:
         virtual ~Photo() { }
 
-        Photo(int id, string& name, int size, time_t time);
-        Photo(string& name, string& data);
+        Photo(int id, string& name, int size, time_t time, shared_ptr<Storage> storage);
+        Photo(string& name, string& data, shared_ptr<Storage> storage);
 
         string data();
         int size();
@@ -30,6 +35,7 @@ namespace pfs {
         string data_;
         int size_;
         struct tm time_;
+        shared_ptr<Storage> storage_;
     };
 }
 

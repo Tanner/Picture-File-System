@@ -39,7 +39,7 @@ int PictureEntity::getattr(struct stat* stbuf) {
 }
 
 int PictureEntity::rename(string new_name) {
-	Storage::rename_picture(photo_, new_name);
+	storage_->rename_picture(photo_, new_name);
 
 	return 0;
 }

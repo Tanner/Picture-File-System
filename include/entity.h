@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "util.h"
+#include "storage.h"
 
 namespace pfs {
 	using namespace std;
@@ -35,6 +36,9 @@ namespace pfs {
         virtual int mknod(mode_t mode, dev_t rdev);
         virtual int release(struct fuse_file_info* fi);
         virtual int rename(string new_name);
+        void set_storage(shared_ptr<Storage> storage) {
+            storage_ = storage;
+        }
         string get_name() {
             return name_;
         }
@@ -45,6 +49,7 @@ namespace pfs {
 		Entity(string name);
         string name_;
 		unsigned int permissions_;
+        shared_ptr<Storage> storage_;
 	};
 }
 

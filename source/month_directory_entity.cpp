@@ -20,12 +20,15 @@ Entity* MonthDirectoryEntity::clone() {
 
 vector<shared_ptr<Entity> > MonthDirectoryEntity::get_children() {
 	vector<shared_ptr<Entity> > children;
-    vector<Photo> photos(Storage::get_photos(year_, month_));
+    vector<Photo> photos(storage_->get_photos(year_, month_));
 
     for (auto i = photos.begin(); i != photos.end(); ++i) {
     	// cout << endl << endl << "PHOTO DATA" << endl;
     	// cout << i->data() << endl;
-    	children.push_back(shared_ptr<Entity>(new PictureEntity(*i)));
+        shared_ptr<Entity> entity(new PictureEntity(*i));
+        entity->set_storage(storage_);
+
+    	children.push_back(entity);
     }
 
     return children;

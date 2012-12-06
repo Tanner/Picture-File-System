@@ -9,12 +9,12 @@
 using namespace pfs;
 using namespace std;
 
-Photo::Photo(int id, string& name, int size, time_t time) : id_(id), name_(name), size_(size) {
+Photo::Photo(int id, string& name, int size, time_t time, shared_ptr<Storage> storage) : id_(id), name_(name), size_(size), storage_(storage) {
     struct tm* temp_time = gmtime(&time);
     time_ = *temp_time;;
 }
 
-Photo::Photo(string& name, string& data) : name_(name), data_(data) {
+Photo::Photo(string& name, string& data, shared_ptr<Storage> storage) : name_(name), data_(data), storage_(storage) {
     id_ = -1;
     size_ = data.length();
     
@@ -46,7 +46,7 @@ string Photo::get_name() {
 
 string Photo::data() {
     if (data_.length() == 0) {
-        data_ = Storage::get_data_for_photo(id_);
+        data_ = storage_->get_data_for_photo(id_);
     }
 
     return data_;
@@ -58,7 +58,7 @@ int Photo::size() {
 
 void Photo::set_data(string& data) {
     data_ = data;
-    Storage::set_data_for_photo(id_, data_);
+    storage_->set_data_for_photo(id_, data_);
 }
 
 int Photo::get_month() {

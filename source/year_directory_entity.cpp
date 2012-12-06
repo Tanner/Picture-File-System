@@ -19,9 +19,12 @@ Entity* YearDirectoryEntity::clone() {
 
 vector<shared_ptr<Entity> > YearDirectoryEntity::get_children() {
     vector<shared_ptr<Entity >> children;
-    vector<int> years(Storage::get_months(year_));
+    vector<int> years(storage_->get_months(year_));
     for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
-        children.push_back(shared_ptr<Entity>(new MonthDirectoryEntity(year_, *i)));
+        shared_ptr<Entity> entity(new MonthDirectoryEntity(year_, *i));
+        entity->set_storage(storage_);
+
+        children.push_back(entity);
     }
 
     return children;

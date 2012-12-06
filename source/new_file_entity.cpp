@@ -85,8 +85,8 @@ int NewFileEntity::release(struct fuse_file_info* fi) {
 	}
 
 	open_ = false;
-    Photo photo = Photo(name_, content_);
-	Storage::add_picture(photo);
+    Photo photo = Photo(name_, content_, storage_);
+	storage_->add_picture(photo);
 
 	RootEntity::get()->remove_file(shared_ptr<Entity>(new NewFileEntity(*this)));
 

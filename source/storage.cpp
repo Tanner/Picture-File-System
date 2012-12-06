@@ -46,6 +46,10 @@ int Storage::add_picture(Photo& photo) {
     return 0;
 }
 
+Storage* Storage::clone() {
+    return new Storage(*this);
+}
+
 int Storage::rename_picture(Photo& photo, string new_name) {
     sqlite3 *db = open();
 
@@ -229,7 +233,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
             int size = sqlite3_column_int(statement, 2);
             time_t time = sqlite3_column_int(statement, 3);
 
-            photos.push_back(Photo(id, name, size, time));
+            photos.push_back(Photo(id, name, size, time, shared_ptr<Storage>(this->clone())));
         }
     } while (result != SQLITE_DONE);
 

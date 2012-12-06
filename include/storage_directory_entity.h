@@ -10,15 +10,9 @@ namespace pfs {
 
 	class StorageDirectoryEntity : public DirectoryEntity {
 	public:
-		StorageDirectoryEntity(string path);
+		StorageDirectoryEntity(string name, string path);
 		Entity* clone();
 		vector<shared_ptr<Entity> > get_children();
-    protected:
-        Storage get_storage() {
-            return storage_;
-        }
-    private:
-        Storage storage_;
 	};
 }
 

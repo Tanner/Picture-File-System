@@ -11,9 +11,12 @@
 namespace pfs {
     using namespace std;
 
+    class Photo;
+
     class Storage {
     public:
         virtual ~Storage() { }
+        Storage(string path);
         int add_picture(Photo& photo);
         int rename_picture(Photo& photo, string new_name);
         int set_data_for_photo(int id, string& data);
@@ -25,7 +28,7 @@ namespace pfs {
             return path_;
         }
     private:
-        Storage(string path);
+        Storage* clone();
         sqlite3* open();
         string get_database_path();
 

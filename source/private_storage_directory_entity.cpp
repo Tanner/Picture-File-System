@@ -1,10 +1,10 @@
 
-#include "storage_directory_entity.h"
+#include "private_storage_directory_entity.h"
 
 using namespace pfs;
 using namespace std;
 
-PrivateStorageDirectoryEntity::StorageDirectoryEntity() : StorageDirectoryEntity(get_private_name(), get_private_path()) {
+PrivateStorageDirectoryEntity::PrivateStorageDirectoryEntity() : StorageDirectoryEntity(get_private_name(), get_private_path()) {
 }
 
 Entity* PrivateStorageDirectoryEntity::clone() {

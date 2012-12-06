@@ -10,7 +10,7 @@ using namespace pfs;
 using namespace std;
 
 StorageDirectoryEntity::StorageDirectoryEntity(string name, string storage_path) : DirectoryEntity(name) {
-    storage_ = Storage(storage_path);
+    storage_ = shared_ptr<Storage>(new Storage(storage_path));
 }
 
 Entity* StorageDirectoryEntity::clone() {
@@ -19,9 +19,12 @@ Entity* StorageDirectoryEntity::clone() {
 
 vector<shared_ptr<Entity> > StorageDirectoryEntity::get_children() {
     vector<shared_ptr<Entity >> children;
-    vector<int> years(Storage::get_years());
+    vector<int> years(storage_->get_years());
     for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
-        children.push_back(shared_ptr<Entity>(new YearDirectoryEntity(*i)));
+        shared_ptr<Entity> entity(new YearDirectoryEntity(*i));
+        entity->set_storage(storage_);
+
+        children.push_back(entity);
     }
 
     return children;
