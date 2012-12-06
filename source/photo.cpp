@@ -77,3 +77,7 @@ struct tm Photo::get_time() {
     return time_;
 }
 
+void Photo::set_time(struct tm time) {
+    time_ = time;
+}
+

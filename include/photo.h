@@ -24,6 +24,7 @@ namespace pfs {
 
         void set_data(string& data);
         void set_name(string& name);
+        void set_time(struct tm time);
         
         int get_id();
         string get_name();
