@@ -14,7 +14,7 @@ DIRS = source
 # Which directories contain header files
 INCS = include
 # Which libraries are linked
-LIBS = fuse sqlite3 exif
+LIBS = fuse sqlite3 exif ssl
 # The static libraries to include
 SLIBS =
 
