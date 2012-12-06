@@ -347,7 +347,7 @@ sqlite3* Storage::open() {
     }
     
     // Init with default tables if they do not exist.
-    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, time INTEGER NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
+    string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT UNIQUE NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, time INTEGER NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
     sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     return db;
