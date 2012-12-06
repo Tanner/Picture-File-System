@@ -67,7 +67,7 @@ int Storage::rename_picture(Photo& photo, string new_name) {
     stringstream query;
     query << "UPDATE photos ";
     query << "SET name='" << new_name << "' ";
-    query << "WHERE id='" << photo.get_id() << "'";
+    query << "WHERE rowid='" << photo.get_id() << "'";
 
     log(query.str());
 
@@ -101,7 +101,7 @@ int Storage::set_data_for_photo(int id, string& data) {
     query << "UPDATE photos ";
     query << "SET contents='" << encoded_data << "', ";
     query << "size='" << data.length() << "' ";
-    query << "WHERE id='" << id << "'";
+    query << "WHERE rowid='" << id << "'";
 
     log(query.str());
 
@@ -313,7 +313,6 @@ string Storage::get_data_for_photo(int id) {
 
 int Storage::delete_photo(int id) {
     sqlite3 *db = open();
-    sqlite3_stmt *statement;
 
     // Check to see if we could open the database
     if (!db) {
@@ -326,7 +325,7 @@ int Storage::delete_photo(int id) {
 
     log(delete_query.str());
     
-    if (sqlite3_prepare(db, delete_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db, delete_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not delete photo with id " << id << " from database";
         log(message.str());

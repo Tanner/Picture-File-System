@@ -41,6 +41,7 @@ int PictureEntity::getattr(struct stat* stbuf) {
 
 int PictureEntity::rename(string new_name) {
     if (is_file_private(name_) && !is_file_private(new_name)) {
+        photo_.data();
         storage_->delete_photo(photo_.get_id());
 
         storage_ = RootEntity::get()->get_public_storage();
@@ -48,6 +49,7 @@ int PictureEntity::rename(string new_name) {
 
         return 0;
     } else if (!is_file_private(name_) && is_file_private(new_name)) {
+        photo_.data();
         storage_->delete_photo(photo_.get_id());
 
         storage_ = RootEntity::get()->get_private_storage();
