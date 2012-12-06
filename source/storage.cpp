@@ -34,6 +34,8 @@ int Storage::add_picture(Photo& photo) {
     insert_query << mktime(&time) << ", ";
     insert_query << photo.get_year() << ", ";
     insert_query << "'" << photo.get_month() << "') ";
+
+    cout << "INSERTING " << photo.get_name() << " INTO DATABASE" << endl;
     
     char *error;
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, &error) != SQLITE_OK) {
@@ -289,13 +291,11 @@ string Storage::get_data_for_photo(int id) {
 
     cout << select_query.str() << endl;
 
-    cout << endl << endl;
-
     if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not select photo with id " << id << " from database";
 
-        cout << endl << endl << message.str() << endl << endl;
+        cout << message.str() << endl;
         
         return data;
     }
@@ -317,6 +317,35 @@ string Storage::get_data_for_photo(int id) {
     sqlite3_close(db);
 
     return base64_decode(data);
+}
+
+int Storage::delete_photo(int id) {
+    sqlite3 *db = open();
+    sqlite3_stmt *statement;
+
+    // Check to see if we could open the database
+    if (!db) {
+        return -1;
+    }
+
+    // Run the query
+    stringstream delete_query;
+    delete_query << "DELETE from photos WHERE (rowid=" << id << ")";
+
+    cout << delete_query.str() << endl;
+
+    if (sqlite3_prepare(db, delete_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+        stringstream message;
+        message << "Could not delete photo with id " << id << " from database";
+
+        cout << message.str() << endl;
+        
+        return -1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
 }
 
 sqlite3* Storage::open() {

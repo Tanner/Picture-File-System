@@ -24,6 +24,7 @@ namespace pfs {
         vector<int> get_months(int year);
         vector<Photo> get_photos(int year, int month);
         string get_data_for_photo(int id);
+        int delete_photo(int id);
         string get_path() {
             return path_;
         }

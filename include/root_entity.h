@@ -4,6 +4,7 @@
 
 #include "directory_entity.h"
 #include "storage_directory_entity.h"
+#include "storage.h"
 
 namespace pfs {
 	using namespace std;
@@ -16,6 +17,13 @@ namespace pfs {
         vector<shared_ptr<Entity> > get_children();
         void add_file(shared_ptr<Entity> child);
         void remove_file(shared_ptr<Entity> child);
+
+        shared_ptr<Storage> get_private_storage() {
+            return private_storage_dir_->get_storage();
+        }
+        shared_ptr<Storage> get_public_storage() {
+            return public_storage_dir_->get_storage();
+        }
     private:
 		RootEntity();
         vector<shared_ptr<Entity> > children_;
