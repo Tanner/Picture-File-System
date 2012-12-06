@@ -17,6 +17,11 @@ Storage::Storage(string path) : path_(path) {
 int Storage::add_picture(Photo& photo) {
     sqlite3 *db = open();
 
+    // Check to see if we could open the database
+    if (!db) {
+        return -1;
+    }
+
     string encoded_data(base64_encode((unsigned char*)photo.data().c_str(), photo.size()));
     struct tm time = photo.get_time();
 
@@ -52,6 +57,11 @@ Storage* Storage::clone() {
 
 int Storage::rename_picture(Photo& photo, string new_name) {
     sqlite3 *db = open();
+    
+    // Check to see if we could open the database
+    if (!db) {
+        return -1;
+    }
 
     stringstream query;
     query << "UPDATE photos ";
@@ -78,6 +88,11 @@ int Storage::rename_picture(Photo& photo, string new_name) {
 
 int Storage::set_data_for_photo(int id, string& data) {
     sqlite3 *db = open();
+    
+    // Check to see if we could open the database
+    if (!db) {
+        return -1;
+    }
 
     string encoded_data(base64_encode((unsigned char*)data.c_str(), data.size()));
 
@@ -111,6 +126,11 @@ vector<int> Storage::get_years() {
     sqlite3_stmt *statement;
 
     vector<int> years;
+
+    // Check to see if we could open the database
+    if (!db) {
+        return years;
+    }
 
     // Run the query
     string select_query = "SELECT year from photos";
@@ -156,6 +176,11 @@ vector<int> Storage::get_months(int year) {
     sqlite3_stmt *statement;
 
     vector<int> months;
+
+    // Check to see if we could open the database
+    if (!db) {
+        return months;
+    }
 
     // Run the query
     stringstream select_query;
@@ -206,6 +231,11 @@ vector<Photo> Storage::get_photos(int year, int month) {
 
     vector<Photo> photos;
 
+    // Check to see if we could open the database
+    if (!db) {
+        return photos;
+    }
+
     // Run the query
     stringstream select_query;
     select_query << "SELECT rowid, name, size, time from photos WHERE (year=" << year << " AND month=" << month << ")";
@@ -247,6 +277,11 @@ string Storage::get_data_for_photo(int id) {
     sqlite3_stmt *statement;
 
     string data = "";
+    
+    // Check to see if we could open the database
+    if (!db) {
+        return "";
+    }
 
     // Run the query
     stringstream select_query;
