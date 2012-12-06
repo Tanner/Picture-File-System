@@ -13,6 +13,9 @@ namespace pfs {
 		StorageDirectoryEntity(string name, string path);
 		Entity* clone();
 		vector<shared_ptr<Entity> > get_children();
+        shared_ptr<Storage> get_storage() {
+            return storage_;
+        }
 	};
 }
 

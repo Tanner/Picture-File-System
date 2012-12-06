@@ -3,6 +3,7 @@
 #define ROOT_ENTITY_H_
 
 #include "directory_entity.h"
+#include "storage_directory_entity.h"
 
 namespace pfs {
 	using namespace std;
@@ -19,6 +20,8 @@ namespace pfs {
 		RootEntity();
         vector<shared_ptr<Entity> > children_;
         static RootEntity* singleton;
+
+        shared_ptr<StorageDirectoryEntity> private_storage_dir_;
 	};
 }
 

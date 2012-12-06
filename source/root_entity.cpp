@@ -22,7 +22,8 @@ RootEntity* RootEntity::get() {
 }
 
 RootEntity::RootEntity() : DirectoryEntity("") {
-    children_.push_back(shared_ptr<Entity>(new PrivateStorageDirectoryEntity()));
+    private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new PrivateStorageDirectoryEntity());
+    children_.push_back(private_storage_dir_);
 }
 
 Entity* RootEntity::clone() {
@@ -46,7 +47,10 @@ shared_ptr<Entity> RootEntity::route_path(string path) {
     }
 
 	if (path_depth(path) == 0 && is_image_path(path)) {
-		return shared_ptr<Entity>(new NewFileEntity(root_for_path(path)));
+        shared_ptr<Entity> entity(new NewFileEntity(root_for_path(path)));
+        entity->set_storage(private_storage_dir_->get_storage());
+
+		return entity;
 	}
 
     return shared_ptr<Entity>(new NullEntity(path));
