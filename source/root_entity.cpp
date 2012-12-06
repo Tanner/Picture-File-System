@@ -22,11 +22,14 @@ RootEntity* RootEntity::get() {
 }
 
 RootEntity::RootEntity() : DirectoryEntity("") {
+    // Set up the private storage directory
     string home(getenv("HOME"));
     string private_storage_dir_location(home+ "/.pfs");
+
     private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new EncryptedStorageDirectoryEntity("My Private Photos", private_storage_dir_location));
     children_.push_back(private_storage_dir_);
 
+    // Set up the public storage directory
     public_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new StorageDirectoryEntity("Shared Photos", "/tmp/.pfs"));
     children_.push_back(public_storage_dir_);
 }
