@@ -31,6 +31,7 @@ namespace pfs {
     private:
         Storage* clone();
         sqlite3* open();
+        int close(sqlite3*);
         string get_database_path();
         void log(string message);
 

@@ -42,12 +42,12 @@ int Storage::add_picture(Photo& photo) {
     if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         log("Could not insert photo in database");
 
-        sqlite3_close(db);
+        close(db);
 
         return -1;
     }
 
-    sqlite3_close(db);
+    close(db);
 
     return 0;
 }
@@ -76,12 +76,12 @@ int Storage::rename_picture(Photo& photo, string new_name) {
         message << "Could not rename photo in database to " << new_name;
         log(message.str());
 
-        sqlite3_close(db);
+        close(db);
 
         return -1;
     }
 
-    sqlite3_close(db);
+    close(db);
 
     return 0;
 }
@@ -108,12 +108,12 @@ int Storage::set_data_for_photo(int id, string& data) {
     if (sqlite3_exec(db, query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         log("Could not set photo data in database");
 
-        sqlite3_close(db);
+        close(db);
 
         return -1;
     }
 
-    sqlite3_close(db);
+    close(db);
 
     return 0;
 }
@@ -151,7 +151,7 @@ vector<int> Storage::get_years() {
         }
     } while (result != SQLITE_DONE);
 
-    sqlite3_close(db);
+    close(db);
 
     // Remove duplicate elements
     for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
@@ -204,7 +204,7 @@ vector<int> Storage::get_months(int year) {
         }
     } while (result != SQLITE_DONE);
 
-    sqlite3_close(db);
+    close(db);
 
     // Remove duplicate elements
     for (vector<int>::iterator i = months.begin(); i != months.end(); ++i) {
@@ -262,7 +262,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
         }
     } while (result != SQLITE_DONE);
 
-    sqlite3_close(db);
+    close(db);
 
     return photos;
 }
@@ -306,7 +306,7 @@ string Storage::get_data_for_photo(int id) {
         }
     } while (result != SQLITE_DONE);
 
-    sqlite3_close(db);
+    close(db);
 
     return base64_decode(data);
 }
@@ -333,7 +333,7 @@ int Storage::delete_photo(int id) {
         return -1;
     }
 
-    sqlite3_close(db);
+    close(db);
 
     return 0;
 }
@@ -351,6 +351,10 @@ sqlite3* Storage::open() {
     sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
 
     return db;
+}
+
+int Storage::close(sqlite3* db) {
+    return sqlite3_close(db);
 }
 
 void Storage::log(string message) {
