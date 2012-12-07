@@ -29,8 +29,8 @@ namespace pfs {
             return path_;
         }
     protected:
-        sqlite3* open();
-        int close(sqlite3*);
+        virtual sqlite3* open();
+        virtual int close(sqlite3*);
 
         string path_;
     private:
