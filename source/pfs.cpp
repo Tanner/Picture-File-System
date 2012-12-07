@@ -4,6 +4,8 @@
 
 #include "root_entity.h"
 
+#include "encrypted_storage.h"
+
 using namespace pfs;
 
 namespace pfs {
@@ -38,7 +40,7 @@ int main(int argc, char** argv) {
     operations.mknod = pfs::mknod;
     operations.release = pfs::release;
     operations.rename = pfs::rename;
-
+    
     return fuse_main(argc, argv, &operations, NULL);
 }
 
