@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #include "root_entity.h"
 
@@ -40,6 +41,10 @@ int main(int argc, char** argv) {
     operations.mknod = pfs::mknod;
     operations.release = pfs::release;
     operations.rename = pfs::rename;
+
+    string pass;
+    cout << "Password: " << flush;
+    cin >> pass;
     
     return fuse_main(argc, argv, &operations, NULL);
 }
