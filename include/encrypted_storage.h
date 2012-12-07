@@ -18,6 +18,8 @@ namespace pfs {
         void encrypt(string key_phrase);
         void decrypt(string key_phrase);
         void encrypt_decrypt(string key_phrase, int enc);
+
+        bool file_exist();
     };
 }
 
