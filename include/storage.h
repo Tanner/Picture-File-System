@@ -15,7 +15,7 @@ namespace pfs {
 
     class Storage {
     public:
-        virtual ~Storage() { }
+        virtual ~Storage();
         Storage(string path);
         int add_picture(Photo& photo);
         int rename_picture(Photo& photo, string new_name);
@@ -28,11 +28,11 @@ namespace pfs {
         string get_path() {
             return path_;
         }
+        virtual void open();
+        virtual int close();
     protected:
-        virtual sqlite3* open();
-        virtual int close(sqlite3*);
-
         string path_;
+        sqlite3* db_;
     private:
         Storage* clone();
         string get_database_path();

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <signal.h>
 
 #include "root_entity.h"
 
@@ -27,6 +28,25 @@ namespace pfs {
 
 static struct fuse_operations operations;
 
+void exit_handler(int signal) {
+    string home(getenv("HOME"));
+    string private_storage_dir_location(home+ "/.pfs");
+    EncryptedStorage private_storage(private_storage_dir_location);
+    private_storage.close();
+
+    exit(1);
+}
+
+void listen_to_signal(int signal, void(*handler)(int)) {
+    struct sigaction sig_action;
+
+    sig_action.sa_handler = handler;
+    sigemptyset(&sig_action.sa_mask);
+    sig_action.sa_flags = 0;
+
+    sigaction(signal, &sig_action, NULL);
+}
+
 int main(int argc, char** argv) {
     operations.getattr = pfs::getattr;
     operations.readdir = pfs::readdir;
@@ -41,6 +61,8 @@ int main(int argc, char** argv) {
     operations.mknod = pfs::mknod;
     operations.release = pfs::release;
     operations.rename = pfs::rename;
+
+    listen_to_signal(SIGINT, exit_handler);
 
     string pass;
     cout << "Password: " << flush;
