@@ -33,6 +33,12 @@ Photo::Photo(string& name, string& data, shared_ptr<Storage> storage) : name_(na
         strptime(buf, "%Y:%m:%d %H:%M:%S", &time_);
     } else {
         // EXIF tag does not exist, use something else
+        time_t raw_time;
+
+        time(&raw_time);
+        time_ = *localtime(&raw_time);
+
+        cout << asctime(&time_) << endl;
     }
 }
 
