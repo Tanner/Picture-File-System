@@ -24,10 +24,12 @@ namespace pfs {
         shared_ptr<Storage> get_public_storage() {
             return public_storage_dir_->get_storage();
         }
+        static void set_password(string pass);
     private:
 		RootEntity();
         vector<shared_ptr<Entity> > children_;
         static RootEntity* singleton;
+        static string pass_;
 
         shared_ptr<StorageDirectoryEntity> private_storage_dir_;
         shared_ptr<StorageDirectoryEntity> public_storage_dir_;

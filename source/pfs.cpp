@@ -10,6 +10,8 @@
 
 using namespace pfs;
 
+static string pass;
+
 namespace pfs {
     int getattr(const char* path, struct stat* stbuf);
     int readdir(const char* path, void* buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* fi);
@@ -30,8 +32,8 @@ static struct fuse_operations operations;
 
 void exit_handler(int signal) {
     string home(getenv("HOME"));
-    string private_storage_dir_location(home+ "/.pfs");
-    EncryptedStorage private_storage(private_storage_dir_location);
+    string private_storage_dir_location(home + "/.pfs");
+    EncryptedStorage private_storage(private_storage_dir_location, pass);
     private_storage.close();
 
     exit(1);
@@ -64,9 +66,10 @@ int main(int argc, char** argv) {
 
     listen_to_signal(SIGINT, exit_handler);
 
-    string pass;
     cout << "Password: " << flush;
     cin >> pass;
+
+    RootEntity::set_password(pass);
     
     return fuse_main(argc, argv, &operations, NULL);
 }

@@ -9,7 +9,7 @@ namespace pfs {
 
     class EncryptedStorage : public Storage {
     public:
-        EncryptedStorage(string path);
+        EncryptedStorage(string path, string& pass);
         void open();
         int close();
     private:
