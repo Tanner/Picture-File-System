@@ -64,14 +64,23 @@ int main(int argc, char** argv) {
     operations.release = pfs::release;
     operations.rename = pfs::rename;
 
+    // intercept ctrl+c
     listen_to_signal(SIGINT, exit_handler);
 
+    // set password
     cout << "Password: " << flush;
     cin >> pass;
-
     RootEntity::set_password(pass);
     
-    return fuse_main(argc, argv, &operations, NULL);
+    int fuse_retval = fuse_main(argc, argv, &operations, NULL);
+
+    // encrypt database
+    string home(getenv("HOME"));
+    string private_storage_dir_location(home + "/.pfs");
+    EncryptedStorage private_storage(private_storage_dir_location, pass);
+    private_storage.close();
+
+    return fuse_retval;
 }
 
 int pfs::getattr(const char* path, struct stat* stbuf) {
