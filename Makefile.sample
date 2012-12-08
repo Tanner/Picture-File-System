@@ -8,7 +8,7 @@ C++ = g++
 # Specify the main target
 TARGET = pfs
 # Default build type (release or debug)
-TYPE = debug
+TYPE = release
 # Which directories contain source files
 DIRS = source
 # Which directories contain header files
@@ -22,11 +22,13 @@ SLIBS =
 ifeq ($(TYPE), debug)
 CCPARAM = -Wall -std=c++0x -g -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
 MACROS =
+RUNARGS = -d
 endif
 
 ifeq ($(TYPE), release)
 CCPARAM = -Wall -std=c++0x -O2 -I$(INCS) -DFUSE_USE_VERSION=28 -D_FILE_OFFSET_BITS=64
 MACROS = NDEBUG
+RUNARGS = 
 endif
 
 # Add directories to the include and library paths
@@ -91,10 +93,10 @@ dirs:
 
 run: $(TARGET) unmount
 		@-if [ ! -e $(MOUNTED) ]; then mkdir $(MOUNTED); fi;
-		@./$(TARGET) $(MOUNTED) -d
+		@./$(TARGET) $(MOUNTED) $(RUNARGS)
 
 unmount:
-		@-test -d $(MOUNTED) || (fusermount -u $(MOUNTED) && rm -r $(MOUNTED))
+		@-test -d $(MOUNTED) && (fusermount -u $(MOUNTED) && rm -r $(MOUNTED))
 
 # Includes the .d files so it knows the exact dependencies for every
 # source.
