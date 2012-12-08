@@ -74,11 +74,13 @@ int main(int argc, char** argv) {
     
     int fuse_retval = fuse_main(argc, argv, &operations, NULL);
 
-    // encrypt database
-    string home(getenv("HOME"));
-    string private_storage_dir_location(home + "/.pfs");
-    EncryptedStorage private_storage(private_storage_dir_location, pass);
-    private_storage.close();
+    if (fuse_retval == 0) {
+        // encrypt database
+        string home(getenv("HOME"));
+        string private_storage_dir_location(home + "/.pfs");
+        EncryptedStorage private_storage(private_storage_dir_location, pass);
+        private_storage.close();
+    }
 
     return fuse_retval;
 }
