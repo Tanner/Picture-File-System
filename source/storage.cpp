@@ -11,14 +11,22 @@
 using namespace pfs;
 using namespace std;
 
-Storage::Storage(string path) : path_(path) {
+Storage::Storage(string path) : path_(path), db_(NULL) {
+
+}
+
+Storage::~Storage() {
+    if (db_ == NULL)
+        return;
+
+    close();
 }
 
 int Storage::add_picture(Photo& photo) {
-    sqlite3 *db = open();
+    open();
 
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return -1;
     }
 
@@ -39,15 +47,11 @@ int Storage::add_picture(Photo& photo) {
     message << "INSERTING " << photo.get_name() << " INTO DATABASE";
     log(message.str());
     
-    if (sqlite3_exec(db, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db_, insert_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         log("Could not insert photo in database");
-
-        close(db);
 
         return -1;
     }
-
-    close(db);
 
     return 0;
 }
@@ -57,10 +61,10 @@ Storage* Storage::clone() {
 }
 
 int Storage::rename_picture(Photo& photo, string new_name) {
-    sqlite3 *db = open();
+    open();
     
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return -1;
     }
 
@@ -71,26 +75,22 @@ int Storage::rename_picture(Photo& photo, string new_name) {
 
     log(query.str());
 
-    if (sqlite3_exec(db, query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db_, query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not rename photo in database to " << new_name;
         log(message.str());
 
-        close(db);
-
         return -1;
     }
-
-    close(db);
 
     return 0;
 }
 
 int Storage::set_data_for_photo(int id, string& data) {
-    sqlite3 *db = open();
+    open();
     
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return -1;
     }
 
@@ -105,27 +105,23 @@ int Storage::set_data_for_photo(int id, string& data) {
 
     log(query.str());
 
-    if (sqlite3_exec(db, query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db_, query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         log("Could not set photo data in database");
-
-        close(db);
 
         return -1;
     }
-
-    close(db);
 
     return 0;
 }
 
 vector<int> Storage::get_years() {
-    sqlite3 *db = open();
+    open();
     sqlite3_stmt *statement;
 
     vector<int> years;
 
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return years;
     }
 
@@ -134,7 +130,7 @@ vector<int> Storage::get_years() {
 
     log(select_query);
 
-    if (sqlite3_prepare(db, select_query.c_str(), -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db_, select_query.c_str(), -1, &statement, 0) != SQLITE_OK) {
         log("Could not select years from database");
         
         return years;
@@ -150,8 +146,6 @@ vector<int> Storage::get_years() {
             years.push_back(sqlite3_column_int(statement, 0));
         }
     } while (result != SQLITE_DONE);
-
-    close(db);
 
     // Remove duplicate elements
     for (vector<int>::iterator i = years.begin(); i != years.end(); ++i) {
@@ -169,13 +163,13 @@ vector<int> Storage::get_years() {
 }
 
 vector<int> Storage::get_months(int year) {
-    sqlite3 *db = open();
+    open();
     sqlite3_stmt *statement;
 
     vector<int> months;
 
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return months;
     }
 
@@ -185,7 +179,7 @@ vector<int> Storage::get_months(int year) {
 
     log(select_query.str());
 
-    if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db_, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not select months for year " << year << " from database";
         log(message.str());
@@ -204,8 +198,6 @@ vector<int> Storage::get_months(int year) {
         }
     } while (result != SQLITE_DONE);
 
-    close(db);
-
     // Remove duplicate elements
     for (vector<int>::iterator i = months.begin(); i != months.end(); ++i) {
         for (vector<int>::iterator j = i + 1; j != months.end(); ++j) {
@@ -222,13 +214,13 @@ vector<int> Storage::get_months(int year) {
 }
 
 vector<Photo> Storage::get_photos(int year, int month) {
-    sqlite3 *db = open();
+    open();
     sqlite3_stmt *statement;
 
     vector<Photo> photos;
 
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return photos;
     }
 
@@ -238,7 +230,7 @@ vector<Photo> Storage::get_photos(int year, int month) {
 
     log(select_query.str());
 
-    if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db_, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not select photos for " << month << " in " << year << " from database";
         log(message.str());
@@ -262,19 +254,17 @@ vector<Photo> Storage::get_photos(int year, int month) {
         }
     } while (result != SQLITE_DONE);
 
-    close(db);
-
     return photos;
 }
 
 string Storage::get_data_for_photo(int id) {
-    sqlite3 *db = open();
+    open();
     sqlite3_stmt *statement;
 
     string data = "";
     
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return "";
     }
 
@@ -284,7 +274,7 @@ string Storage::get_data_for_photo(int id) {
 
     log(select_query.str());
 
-    if (sqlite3_prepare(db, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
+    if (sqlite3_prepare(db_, select_query.str().c_str(), -1, &statement, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not select photo with id " << id << " from database";
         log(message.str());
@@ -306,16 +296,14 @@ string Storage::get_data_for_photo(int id) {
         }
     } while (result != SQLITE_DONE);
 
-    close(db);
-
     return base64_decode(data);
 }
 
 int Storage::delete_photo(int id) {
-    sqlite3 *db = open();
+    open();
 
     // Check to see if we could open the database
-    if (!db) {
+    if (!db_) {
         return -1;
     }
 
@@ -325,7 +313,7 @@ int Storage::delete_photo(int id) {
 
     log(delete_query.str());
     
-    if (sqlite3_exec(db, delete_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
+    if (sqlite3_exec(db_, delete_query.str().c_str(), 0, 0, 0) != SQLITE_OK) {
         stringstream message;
         message << "Could not delete photo with id " << id << " from database";
         log(message.str());
@@ -333,28 +321,26 @@ int Storage::delete_photo(int id) {
         return -1;
     }
 
-    close(db);
-
     return 0;
 }
 
-sqlite3* Storage::open() {
-    sqlite3 *db;
+void Storage::open() {
+    if (db_ != NULL) {
+        return;
+    }
 
-    if(sqlite3_open(path_.c_str(), &db) != SQLITE_OK) {
+    if(sqlite3_open(path_.c_str(), &db_) != SQLITE_OK) {
         log("Could not open database");
-        return NULL;
+        return;
     }
     
     // Init with default tables if they do not exist.
     string create_table_query = "CREATE TABLE IF NOT EXISTS photos (name TEXT UNIQUE NOT NULL, size INTEGER NOT NULL, contents BLOB NOT NULL, time INTEGER NOT NULL, year INTEGER NOT NULL, month INTEGER NOT NULL)";
-    sqlite3_exec(db, create_table_query.c_str(), 0, 0, 0);
-
-    return db;
+    sqlite3_exec(db_, create_table_query.c_str(), 0, 0, 0);
 }
 
-int Storage::close(sqlite3* db) {
-    return sqlite3_close(db);
+int Storage::close() {
+    return sqlite3_close(db_);
 }
 
 void Storage::log(string message) {
