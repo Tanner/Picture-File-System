@@ -91,7 +91,7 @@ dirs:
 		@-$(foreach DIR,$(INCS), if [ ! -e $(STORE)/$(DIR) ]; \
 		 then mkdir $(STORE)/$(DIR); fi; )
 
-run: $(TARGET) unmount
+run: $(TARGET)
 		@-if [ ! -e $(MOUNTED) ]; then mkdir $(MOUNTED); fi;
 		@./$(TARGET) $(MOUNTED) $(RUNARGS)
 
