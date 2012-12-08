@@ -12,6 +12,7 @@ using namespace pfs;
 using namespace std;
 
 RootEntity* RootEntity::singleton = NULL;
+string RootEntity::pass_;
 
 RootEntity* RootEntity::get() {
     if (RootEntity::singleton == NULL) {
@@ -26,7 +27,7 @@ RootEntity::RootEntity() : DirectoryEntity("") {
     string home(getenv("HOME"));
     string private_storage_dir_location(home+ "/.pfs");
 
-    private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new EncryptedStorageDirectoryEntity("My Private Photos", private_storage_dir_location));
+    private_storage_dir_ = shared_ptr<StorageDirectoryEntity>(new EncryptedStorageDirectoryEntity("My Private Photos", private_storage_dir_location, pass_));
     children_.push_back(private_storage_dir_);
 
     // Set up the public storage directory
@@ -36,6 +37,10 @@ RootEntity::RootEntity() : DirectoryEntity("") {
 
 Entity* RootEntity::clone() {
     return new RootEntity(*this);
+}
+
+void RootEntity::set_password(string pass) {
+    pass_ = pass;
 }
 
 shared_ptr<Entity> RootEntity::route_path(string path) {

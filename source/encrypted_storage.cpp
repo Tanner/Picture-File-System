@@ -11,8 +11,8 @@
 using namespace pfs;
 using namespace std;
 
-EncryptedStorage::EncryptedStorage(string path) : Storage(path) {
-    key_phrase_ = "pack12";
+EncryptedStorage::EncryptedStorage(string path, string& pass) : Storage(path), key_phrase_(pass) {
+
 }
 
 void EncryptedStorage::open() {
@@ -69,9 +69,6 @@ void EncryptedStorage::encrypt_decrypt(string key_phrase, int enc) {
     BF_set_key(&key, key_phrase.length(), (const unsigned char*) key_phrase.c_str());
 
     ifstream input_file(path_, ios::binary);
-
-    input_file.seekg (0, ios::end);
-    streampos length = input_file.tellg();
     input_file.seekg (0, ios::beg);
 
     vector<char> buf;

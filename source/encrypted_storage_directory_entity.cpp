@@ -9,8 +9,8 @@
 using namespace pfs;
 using namespace std;
 
-EncryptedStorageDirectoryEntity::EncryptedStorageDirectoryEntity(string name, string storage_path) : StorageDirectoryEntity(name, storage_path) {
-    storage_ = shared_ptr<EncryptedStorage>(new EncryptedStorage(storage_path));
+EncryptedStorageDirectoryEntity::EncryptedStorageDirectoryEntity(string name, string storage_path, string& pass) : StorageDirectoryEntity(name, storage_path) {
+    storage_ = shared_ptr<EncryptedStorage>(new EncryptedStorage(storage_path, pass));
 }
 
 Entity* EncryptedStorageDirectoryEntity::clone() {

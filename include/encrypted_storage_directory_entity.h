@@ -10,7 +10,7 @@ namespace pfs {
 
 	class EncryptedStorageDirectoryEntity : public StorageDirectoryEntity {
 	public:
-		EncryptedStorageDirectoryEntity(string name, string path);
+		EncryptedStorageDirectoryEntity(string name, string path, string& pass);
 		Entity* clone();
         shared_ptr<Storage> get_storage() {
             return storage_;
