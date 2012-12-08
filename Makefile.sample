@@ -3,7 +3,7 @@
 MOUNTED = ~/pfs/
 
 # The compiler
-C++ = g++44
+C++ = g++
 
 # Specify the main target
 TARGET = pfs
@@ -14,7 +14,7 @@ DIRS = source
 # Which directories contain header files
 INCS = include
 # Which libraries are linked
-LIBS = fuse sqlite3 exif ssl
+LIBS = fuse sqlite3 exif ssl crypto
 # The static libraries to include
 SLIBS =
 
@@ -94,7 +94,7 @@ run: $(TARGET) unmount
 		@./$(TARGET) $(MOUNTED) -d
 
 unmount:
-		@-if [ -e $(MOUNTED) ]; then fusermount -u $(MOUNTED); rm -r $(MOUNTED); fi;
+		@-test -d $(MOUNTED) || (fusermount -u $(MOUNTED) && rm -r $(MOUNTED))
 
 # Includes the .d files so it knows the exact dependencies for every
 # source.
